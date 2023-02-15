@@ -1,0 +1,37 @@
+{
+  "name": "restApi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "startCrosEnv": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
+    "buildCrosEnv": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
+    "test": "jest",
+    "start": "webpack serve --config config/webpack.dev.js",
+    "build": "webpack --config config/webpack.prod.js",
+    "lint": "eslint ./src --color",
+    "lint:fix": "eslint ./src --fix --color"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css}": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  }
+}
