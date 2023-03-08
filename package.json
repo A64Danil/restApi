@@ -7,7 +7,7 @@
     "startCrosEnv": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "buildCrosEnv": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "test": "jest",
-    "start": "webpack serve --config config/webpack.dev.js",
+    "start": "node server.js",
     "build": "webpack --config config/webpack.prod.js",
     "lint": "eslint ./src --color",
     "lint:fix": "eslint ./src --fix --color"
