@@ -1,11 +1,26 @@
 const http = require('http');
 const { getProducts, getProduct, createProduct, updateProduct } = require('./controllers/productController');
 
+const fs = require('fs');
+
 
 const server = http.createServer((req, res) => {
     console.log(req.method)
+    console.log(req.url)
 
-    if(req.url === '/api/products' && req.method === 'GET') {
+    if(req.url === '/' && req.method === 'GET') {
+        // TODO: доделать нормальную функцию
+        console.log('ROOT URL');
+        res.setHeader('Content-Type', 'text/html');
+        fs.readFile('./postTest.html', (err, data) => {
+            if (err) {
+                console.log(err)
+                res.end();
+            } else {
+                res.end(data);
+            }
+        });
+    } else if(req.url === '/api/products' && req.method === 'GET') {
         getProducts(req, res);
     } else if(req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'GET') {
         const id = req.url.split('/')[3];
