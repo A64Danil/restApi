@@ -1,6 +1,6 @@
 const Product = require('../models/productsModel');
 
-const { getPostData } = require('../utils');
+const {getPostData} = require('../utils');
 
 // @desc Gets All Products
 // @route GET api/products
@@ -8,7 +8,12 @@ async function getProducts(req, res) {
     try {
         const products = await Product.findAll();
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.writeHead(200, {
+            'Content-Type': 'application/json; charset=utf-8',
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "http://localhost:63342",
+        });
+
         res.end(JSON.stringify(products))
     } catch (e) {
         console.log(e)
@@ -21,11 +26,11 @@ async function getProduct(req, res, id) {
     try {
         const product = await Product.findById(id);
 
-        if(!product) {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Product not found' }))
+        if (!product) {
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Product not found'}))
         } else {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(product))
         }
 
@@ -45,7 +50,7 @@ async function createProduct(req, res) {
         const urlParams = new URLSearchParams(body);
         const params = Object.fromEntries(urlParams)
         // const { title, description, price } = JSON.parse(params);
-        const { title, description, price } = params;
+        const {title, description, price} = params;
         console.log(title, description, price);
 
 
@@ -56,7 +61,7 @@ async function createProduct(req, res) {
         }
 
         const newProduct = await Product.create(product);
-        res.writeHead(201, { 'Content-Type': 'application/json' })
+        res.writeHead(201, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(newProduct))
     } catch (e) {
         console.log(e)
@@ -70,8 +75,8 @@ async function updateProduct(req, res, id) {
         const product = await Product.findById(id);
 
         if (!product) {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Product not found' }));
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Product not found'}));
         } else {
             const body = await getPostData(req);
             console.log('body', body);
@@ -79,7 +84,7 @@ async function updateProduct(req, res, id) {
             const urlParams = new URLSearchParams(body);
             const params = Object.fromEntries(urlParams)
             // const { title, description, price } = JSON.parse(params);
-            const { title, description, price } = params;
+            const {title, description, price} = params;
             console.log(title, description, price);
 
 
@@ -90,7 +95,7 @@ async function updateProduct(req, res, id) {
             }
 
             const updProduct = await Product.update(id, productData);
-            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.writeHead(200, {'Content-Type': 'application/json'})
             res.end(JSON.stringify(updProduct))
         }
 

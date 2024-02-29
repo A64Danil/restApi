@@ -47,35 +47,8 @@
 </form>
 
 
-<script>
+<ul class="usersList"></ul>
 
-    const URL = 'http://localhost:5000/api/products/8b5ac6dc-1823-48af-a559-cf592bdaf381';
-    const putForm = document.getElementById('putForm');
-
-    console.log(putForm);
-
-    let user = {
-        name: 'John',
-        surname: 'Smith'
-    };
-
-    putForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const newData = new FormData(putForm);
-
-        console.log(newData)
-
-        let response = await fetch(URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: newData
-        });
-
-        let result = await response.json();
-    })
-</script>
+<script src="src/js/frontendTest.js"></script>
 </body>
 </html>
