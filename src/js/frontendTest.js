@@ -1,4 +1,4 @@
-console.log('test from js - 19:22')
+console.log('test from js - 17:22')
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -47,9 +47,29 @@ const result = fData.split('Content-Disposition: form-data; name=')
         // console.log(res)
         return res
     })
-    .filter( pair => pair.length > 1)
+    .filter( pair => pair.length > 1 && pair[1].length > 0)
 
 console.log(result)
+
+const params = Object.fromEntries(result)
+console.log(params)
+
+const objSrc = {
+    "title": "TEwsf",
+    "description": "32",
+    "price": "2"
+};
+
+console.log(objSrc)
+
+const objNew = {
+    "title": "Serious man",
+    "description": "",
+}
+
+const productData  = { ...objSrc, ...objNew }
+console.log(productData)
+
 
 // just a test
 

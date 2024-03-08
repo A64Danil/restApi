@@ -113,7 +113,7 @@ async function updateProduct(req, res, id) {
                     console.log("res1:" + res[1])
                     return res
                 })
-                .filter( pair => pair.length > 1)
+                .filter( pair => pair.length > 1 && pair[1].length > 0)
 
 
             const params = Object.fromEntries(parsedBodyLikeEntries)
@@ -123,12 +123,7 @@ async function updateProduct(req, res, id) {
             console.log("Логи:", title, description, price);
 
 
-            // TODO: переделать на const productData  = { ...product, ...params }
-            const productData = {
-                title: title || product.title,
-                description: description || product.description,
-                price: price || product.price
-            }
+            const productData  = { ...product, ...params }
 
             const updProduct = await Product.update(id, productData);
 
