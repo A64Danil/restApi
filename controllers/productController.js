@@ -1,11 +1,20 @@
 const Product = require('../models/productsModel');
 
-const {getPostData, replaceAll} = require('../utils');
+const {getPostData, replaceAll } = require('../utils');
 
 const RESPONSE_OBJ = {
     'Content-Type': 'application/json; charset=utf-8',
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Origin": "http://localhost:63342",
+}
+
+function splitByLineBreaks(str) {
+    if(str.indexOf('\n\n') !== -1) {
+        str = str.split('\n\n');
+    }  else if(str.indexOf('\r\n') !== -1) {
+        str = str.split('\r\n\r\n');
+    }
+    return str
 }
 
 // @desc Gets All Products
@@ -89,29 +98,23 @@ async function updateProduct(req, res, id) {
             const parsedBodyLikeEntries = body.split('Content-Disposition: form-data; name=')
                 .map( string => {
                     const sliceINDEX = string.indexOf('------WebKitFormBoundary');
-                    let res = string.slice(0, sliceINDEX).trim();
+                    let res = string.slice(0, sliceINDEX);
 
-                    console.log('===================');
-                    console.log(res);
-                    if(res.indexOf('\n\n') !== -1) {
-                        res = res.split('\n\n');
-                    }  else if(res.indexOf('\r\n') !== -1) {
-                        res = res.split('\r\n\r\n');
-                    }
-                    console.log(res[0])
-                    console.log(res[1])
+                    if(res.length <= 1) return [];
+
+                    res = splitByLineBreaks(res);
+                    //
+                    // console.log("pair")
+                    // console.log(res[0])
+                    // console.log(res[1])
                     if(res[0]) res[0] = replaceAll(res[0],'"','')
+                    if(res[1]) res[1] = res[1].trim();
 
-                    console.log(res)
+                    console.log("res1:" + res[1])
                     return res
                 })
                 .filter( pair => pair.length > 1)
 
-            // TODO: доделать проверку, чтобы не было пустых полей типа
-            // [ [ 'title', 'hello' ], '"description"', '"price"' ]
-            console.log(parsedBodyLikeEntries)
-            // res.writeHead(200, RESPONSE_OBJ)
-            // res.end(JSON.stringify(result))
 
             const params = Object.fromEntries(parsedBodyLikeEntries)
             console.log(params)
@@ -126,8 +129,8 @@ async function updateProduct(req, res, id) {
                 description: description || product.description,
                 price: price || product.price
             }
-
             const updProduct = await Product.update(id, productData);
+
             res.writeHead(200, RESPONSE_OBJ)
             res.end(JSON.stringify(updProduct))
         }
