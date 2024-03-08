@@ -39,8 +39,41 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
+function splitByLineBreaks(str) {
+    if(str.indexOf('\n\n') !== -1) {
+        str = str.split('\n\n');
+    }  else if(str.indexOf('\r\n') !== -1) {
+        str = str.split('\r\n\r\n');
+    }
+    return str
+}
+
+function formDataToObj(srcStr) {
+    const parsedLikeEntries = srcStr.split('Content-Disposition: form-data; name=')
+        .map( string => {
+            const sliceINDEX = string.indexOf('------WebKitFormBoundary');
+            let res = string.slice(0, sliceINDEX);
+
+            if(res.length <= 1) return [];
+
+            res = splitByLineBreaks(res);
+
+            if(res[0]) res[0] = replaceAll(res[0],'"','')
+            if(res[1]) res[1] = res[1].trim();
+
+            console.log("res1:" + res[1])
+            return res
+        })
+        .filter( pair => pair.length > 1 && pair[1].length > 0)
+
+    const object = Object.fromEntries(parsedLikeEntries)
+
+    return object;
+}
+
 module.exports = {
     writeDataToFile,
     replaceAll,
-    getPostData
+    getPostData,
+    formDataToObj
 }

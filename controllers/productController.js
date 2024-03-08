@@ -1,20 +1,11 @@
 const Product = require('../models/productsModel');
 
-const {getPostData, replaceAll} = require('../utils');
+const {getPostData, formDataToObj} = require('../utils');
 
 const RESPONSE_OBJ = {
     'Content-Type': 'application/json; charset=utf-8',
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Origin": "http://localhost:63342",
-}
-
-function splitByLineBreaks(str) {
-    if(str.indexOf('\n\n') !== -1) {
-        str = str.split('\n\n');
-    }  else if(str.indexOf('\r\n') !== -1) {
-        str = str.split('\r\n\r\n');
-    }
-    return str
 }
 
 // @desc Gets All Products
@@ -93,26 +84,8 @@ async function updateProduct(req, res, id) {
             const body = await getPostData(req);
             // console.log('body', body);
 
-            const parsedBodyLikeEntries = body.split('Content-Disposition: form-data; name=')
-                .map( string => {
-                    const sliceINDEX = string.indexOf('------WebKitFormBoundary');
-                    let res = string.slice(0, sliceINDEX);
-
-                    if(res.length <= 1) return [];
-
-                    res = splitByLineBreaks(res);
-
-                    if(res[0]) res[0] = replaceAll(res[0],'"','')
-                    if(res[1]) res[1] = res[1].trim();
-
-                    console.log("res1:" + res[1])
-                    return res
-                })
-                .filter( pair => pair.length > 1 && pair[1].length > 0)
-
-
-            const params = Object.fromEntries(parsedBodyLikeEntries)
-            const productData  = { ...product, ...params }
+            const formDataObj = formDataToObj(body);
+            const productData  = { ...product, ...formDataObj }
             const updProduct = await Product.update(id, productData);
 
             res.writeHead(200, RESPONSE_OBJ)
