@@ -1,6 +1,6 @@
 const Product = require('../models/productsModel');
 
-const {getPostData, replaceAll } = require('../utils');
+const {getPostData, replaceAll} = require('../utils');
 
 const RESPONSE_OBJ = {
     'Content-Type': 'application/json; charset=utf-8',
@@ -129,6 +129,7 @@ async function updateProduct(req, res, id) {
                 description: description || product.description,
                 price: price || product.price
             }
+
             const updProduct = await Product.update(id, productData);
 
             res.writeHead(200, RESPONSE_OBJ)

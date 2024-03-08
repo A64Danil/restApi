@@ -1,4 +1,4 @@
-console.log('test from js - 20:17')
+console.log('test from js - 19:22')
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -7,24 +7,21 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
+function removeLineBreaks(str) {
+    if(str.indexOf('\n\n') !== -1) {
+        str = str.split('\n\n');
+    }  else if(str.indexOf('\r\n') !== -1) {
+        str = str.split('\r\n\r\n');
+    }
+    return str
+}
+
 const URL = 'http://localhost:5000/api/products/8b5ac6dc-1823-48af-a559-cf592bdaf381';
 const putForm = document.getElementById('putForm');
 
 console.log(putForm);
 
-const fData = ` ------WebKitFormBoundaryF8wYxOgKGA9HlXDa
-Content-Disposition: form-data; name="title"
-
-w45
-------WebKitFormBoundaryF8wYxOgKGA9HlXDa
-Content-Disposition: form-data; name="description"
-
-324
-------WebKitFormBoundaryF8wYxOgKGA9HlXDa
-Content-Disposition: form-data; name="price"
-
-234
-------WebKitFormBoundaryF8wYxOgKGA9HlXDa--
+const fData = `------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"title\"\r\n\r\n1907\r\n------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"price\"\r\n\r\n\r\n------WebKitFormBoundary7KFVcihQEuBPAYer--\r\n
 `;
 
 const rawEntries = [ [ 'title', 'TEwsf' ], [ 'description', '32' ], [ 'price', '2' ] ];
@@ -37,12 +34,17 @@ console.log(fData.split('Content-Disposition: form-data; name='))
 const result = fData.split('Content-Disposition: form-data; name=')
     .map( string => {
         const sliceINDEX = string.indexOf('------WebKitFormBoundary');
-        console.log(sliceINDEX);
-        const res = string.slice(0, sliceINDEX).trim().split('\n\n');
+        let res = string.slice(0, sliceINDEX);
 
-        res[0] = replaceAll(res[0],'"','')
+        if(res.length <= 1) return [];
 
-        console.log(res)
+        res = removeLineBreaks(res);
+
+
+        if(res[0]) res[0] = replaceAll(res[0],'"','')
+        if(res[1]) res[1] = res[1].trim();
+
+        // console.log(res)
         return res
     })
     .filter( pair => pair.length > 1)
@@ -72,16 +74,14 @@ putForm.addEventListener('submit', async (e) => {
     const newData = new FormData(putForm);
 
     console.log(newData)
-    // TODO: загуглить как работает new FormData();
     let response = await fetch(URL, {
         method: 'PUT',
-        // headers: {
-        //     'Content-Type': 'application/x-www-form-urlencoded'
-        // },
         body: newData
     });
 
     let result = await response.json();
+
+    console.log(result)
 })
 
 
