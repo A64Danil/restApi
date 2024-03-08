@@ -90,11 +90,9 @@ async function updateProduct(req, res, id) {
             res.writeHead(404, RESPONSE_OBJ);
             res.end(JSON.stringify({message: 'Product not found'}));
         } else {
-            console.log(product)
             const body = await getPostData(req);
             // console.log('body', body);
 
-            // TODO: пересобрать, удалить логи
             const parsedBodyLikeEntries = body.split('Content-Disposition: form-data; name=')
                 .map( string => {
                     const sliceINDEX = string.indexOf('------WebKitFormBoundary');
@@ -103,10 +101,7 @@ async function updateProduct(req, res, id) {
                     if(res.length <= 1) return [];
 
                     res = splitByLineBreaks(res);
-                    //
-                    // console.log("pair")
-                    // console.log(res[0])
-                    // console.log(res[1])
+
                     if(res[0]) res[0] = replaceAll(res[0],'"','')
                     if(res[1]) res[1] = res[1].trim();
 
@@ -117,14 +112,7 @@ async function updateProduct(req, res, id) {
 
 
             const params = Object.fromEntries(parsedBodyLikeEntries)
-            console.log(params)
-
-            const {title, description, price} = params;
-            console.log("Логи:", title, description, price);
-
-
             const productData  = { ...product, ...params }
-
             const updProduct = await Product.update(id, productData);
 
             res.writeHead(200, RESPONSE_OBJ)
