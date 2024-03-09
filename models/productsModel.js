@@ -37,9 +37,19 @@ function update(id, product) {
     })
 }
 
+function remove(id) {
+    return new Promise((resolve, reject)=>{
+        const filteredData = dataArray.filter(el => el.id !== id);
+
+        writeDataToFile('./data/testData.json', filteredData);
+        resolve(filteredData);
+    })
+}
+
 module.exports = {
     findAll,
     findById,
     create,
-    update
+    update,
+    remove
 }

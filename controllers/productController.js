@@ -97,9 +97,30 @@ async function updateProduct(req, res, id) {
     }
 }
 
+// @desc Delete Single Product
+// @route DELETE api/products/:id
+async function deleteProduct(req, res, id) {
+    try {
+        const product = await Product.findById(id);
+
+        if (!product) {
+            res.writeHead(404, RESPONSE_OBJ);
+            res.end(JSON.stringify({message: 'Product not found'}))
+        } else {
+            const products = await Product.remove(id);
+            res.writeHead(200, RESPONSE_OBJ);
+            res.end(JSON.stringify(products))
+        }
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     getProducts,
     getProduct,
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

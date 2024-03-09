@@ -16,7 +16,7 @@ function removeLineBreaks(str) {
     return str
 }
 
-const URL = 'http://localhost:5000/api/products/8b5ac6dc-1823-48af-a559-cf592bdaf381';
+const URL = 'http://localhost:5000/api/products/1';
 const putForm = document.getElementById('putForm');
 
 console.log(putForm);
@@ -54,39 +54,6 @@ console.log(result)
 const params = Object.fromEntries(result)
 console.log(params)
 
-const objSrc = {
-    "title": "TEwsf",
-    "description": "32",
-    "price": "2"
-};
-
-console.log(objSrc)
-
-const objNew = {
-    "title": "Serious man",
-    "description": "",
-}
-
-const productData  = { ...objSrc, ...objNew }
-console.log(productData)
-
-
-// just a test
-
-//
-// let user = {
-//     name: 'John',
-//     surname: 'Smith'
-// };
-//
-// const newUserData = {
-//     name: "John Vick",
-//     age: 49
-// }
-//
-// const combinedUser = {...user, ...newUserData};
-
-// console.log(combinedUser)
 
 putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -95,8 +62,8 @@ putForm.addEventListener('submit', async (e) => {
 
     console.log(newData)
     let response = await fetch(URL, {
-        method: 'PUT',
-        body: newData
+        method: 'DELETE',
+        // body: newData
     });
 
     let result = await response.json();

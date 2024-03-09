@@ -1,5 +1,5 @@
 const http = require('http');
-const {getProducts, getProduct, createProduct, updateProduct} = require('./controllers/productController');
+const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./controllers/productController');
 
 const fs = require('fs');
 
@@ -9,10 +9,7 @@ const server = http.createServer((req, res) => {
     console.log(req.url)
 
     if (req.method === 'OPTIONS') {
-        // res.setHeader('Content-Type', 'text/html');
-        console.log('inside options')
-        // TODO: change 200 to 204
-        res.writeHead(200, {
+        res.writeHead(204, {
             'Content-Type': 'application/json; charset=utf-8',
             "Access-Control-Allow-Origin": "http://localhost:63342",
             // "Connection": "keep-alive",
@@ -48,7 +45,11 @@ const server = http.createServer((req, res) => {
         const id = req.url.split('/')[3];
         console.log('try to update ID', id);
         updateProduct(req, res, id);
-    } else {
+    } else if (req.url.match(/\/api\/products\/([0-9]+)/) &&  req.method === 'DELETE') {
+        const id = req.url.split('/')[3];
+        console.log('try to delete ID', id);
+        deleteProduct(req, res, id);
+    }else {
         console.log('not found, inside else-condiiton')
         res.writeHead(404, {'Content-Type': 'application/json'});
         res.end(JSON.stringify({'message': 'Route not found'}))
