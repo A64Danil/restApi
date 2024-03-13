@@ -16,7 +16,7 @@ function removeLineBreaks(str) {
     return str
 }
 
-const URL = 'http://localhost:5000/api/products/1';
+const URL = 'http://localhost:5000/api/products/';
 const putForm = document.getElementById('putForm');
 
 console.log(putForm);
@@ -59,11 +59,13 @@ putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const newData = new FormData(putForm);
+    const userID = newData.get("userID");
 
     console.log(newData)
-    let response = await fetch(URL, {
-        method: 'DELETE',
-        // body: newData
+    console.log()
+    let response = await fetch(URL + userID, {
+        method: 'PUT',
+        body: newData
     });
 
     let result = await response.json();
@@ -73,8 +75,10 @@ putForm.addEventListener('submit', async (e) => {
 
 
 const usersList = document.querySelector('.usersList');
+const usersIDlist = document.querySelector('.usersIDlist');
 
-function createItem(obj) {
+
+function createListItem(obj) {
     const li = document.createElement('li');
 
     let text = obj.id.slice(0, 6) + " )";
@@ -87,6 +91,19 @@ function createItem(obj) {
     return li;
 }
 
+function createOptionItem(obj) {
+    const option = document.createElement('option');
+
+    let text = obj.id.slice(0, 6) + " )";
+
+    if(obj.title) text += " " + obj.title;
+    if(obj.firstname) text += " " + obj.firstname;
+
+    option.value = obj.id;
+    option.textContent = text;
+
+    return option;
+}
 
 window.addEventListener('load', async function (){
     console.log('Window was loaded');
@@ -95,8 +112,10 @@ window.addEventListener('load', async function (){
     const result = await res.json();
 
     result.forEach(el => {
-        const item = createItem(el);
+        const item = createListItem(el);
+        const option = createOptionItem(el);
         usersList.append(item)
+        usersIDlist.append(option)
     });
     console.log(result)
 })

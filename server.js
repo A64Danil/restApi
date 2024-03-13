@@ -1,11 +1,72 @@
 const http = require('http');
 const express = require('express')
 const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./controllers/productController');
-
 const fs = require('fs');
-
-
+const cors = require('cors')
 const app = express();
+
+app.use(cors())
+//
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:63342",);
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     // 'Content-Type': 'application/json; charset=utf-8',
+//     next();
+// });
+//
+// app.options("/*", function(req, res, next){
+//     res.header('Access-Control-Allow-Origin', "http://localhost:63342",);
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+//     res.send(200);
+// });
+
+// TODO: выяснить почему не прилетает префлайт реквест в экспресс!!!
+app.get('/', (req, res) => {
+    // response.send('This is about us page')
+    res.setHeader('Content-Type', 'text/html');
+        fs.readFile('./postTest.html', (err, data) => {
+            if (err) {
+                console.log(err)
+                res.end();
+            } else {
+                res.end(data);
+            }
+        });
+})
+
+
+app.get('/api/products', function(req, res, next){
+    getProducts(req, res);
+});
+
+
+app.get('/api/products/:id', (req, res) => {
+    // Извлекаем ID продукта из URL
+    const id = req.params.id;
+    // res.send(`Product ID: ${productId}`);
+    getProduct(req, res, id);
+});
+
+app.post('/api/products', (req, res) => {
+    createProduct(req, res);
+});
+
+
+app.put('/api/products/:id', (req, res) => {
+    const id = req.params.id;
+    updateProduct(req, res, id);
+});
+
+app.delete('/api/products/:id', (req, res) => {
+    const id = req.params.id;
+    deleteProduct(req, res, id);
+});
+
+app.use((req, res, next) => {
+    res.status(404).json({'message': 'Route not found'});
+});
+
 
 // TODO: перетащить все функции в экспресс
 
@@ -37,27 +98,6 @@ const app = express();
 //                 res.end(data);
 //             }
 //         });
-//     } else if (req.url === '/api/products' && req.method === 'GET') {
-//         getProducts(req, res);
-//     } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'GET') {
-//         const id = req.url.split('/')[3];
-//         console.log('try to get some ID', id);
-//         getProduct(req, res, id);
-//     } else if (req.url === '/api/products' && req.method === 'POST') {
-//         console.log('try to POST some')
-//         createProduct(req, res);
-//     } else if (req.url.match(/\/api\/products\/([0-9]+)/) && (req.method === 'OPTIONS' || req.method === 'PUT')) {
-//         const id = req.url.split('/')[3];
-//         console.log('try to update ID', id);
-//         updateProduct(req, res, id);
-//     } else if (req.url.match(/\/api\/products\/([0-9]+)/) &&  req.method === 'DELETE') {
-//         const id = req.url.split('/')[3];
-//         console.log('try to delete ID', id);
-//         deleteProduct(req, res, id);
-//     }else {
-//         console.log('not found, inside else-condiiton')
-//         res.writeHead(404, {'Content-Type': 'application/json'});
-//         res.end(JSON.stringify({'message': 'Route not found'}))
 //     }
 //
 // })
