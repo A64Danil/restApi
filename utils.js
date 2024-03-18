@@ -71,9 +71,22 @@ function formDataToObj(srcStr) {
     return object;
 }
 
+function parseIntObj(parsedObj) {
+    const resObj = {};
+
+    for (const key in parsedObj) {
+        if(parsedObj.hasOwnProperty(key) && typeof parsedObj[key] === 'string') {
+            resObj[key] = parseInt(parsedObj[key]);
+        }
+    }
+
+    return resObj;
+}
+
 module.exports = {
     writeDataToFile,
     replaceAll,
     getPostData,
-    formDataToObj
+    formDataToObj,
+    parseIntObj
 }
