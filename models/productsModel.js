@@ -9,6 +9,33 @@ function findAll() {
     })
 }
 
+
+function findInRange(start = 1, end = 10) {
+    const maxEnd = dataArray.length;
+
+    if (end > maxEnd) end = maxEnd;
+
+    if(start <= 0 || start > maxEnd) start = 1;
+
+    return new Promise((resolve, reject)=>{
+        resolve(dataArray.slice(start - 1, end));
+    })
+}
+
+function findFromOffset(offset = 0, limit = 10) {
+    const maxEnd = dataArray.length;
+
+    if(offset < 0 || offset > maxEnd) offset = 0;
+    const start = offset;
+
+    let end = offset + limit;
+    if(end > maxEnd) end = maxEnd - start;
+
+    return new Promise((resolve, reject)=>{
+        resolve(dataArray.slice(start, end));
+    })
+}
+
 function findById(id) {
     return new Promise((resolve, reject)=>{
         const product = dataArray.find( item => item.id === id);
@@ -48,6 +75,8 @@ function remove(id) {
 
 module.exports = {
     findAll,
+    findInRange,
+    findFromOffset,
     findById,
     create,
     update,

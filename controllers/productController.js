@@ -1,6 +1,6 @@
 const Product = require('../models/productsModel');
 
-const {getPostData, formDataToObj} = require('../utils');
+const {getPostData, formDataToObj, parseIntObj} = require('../utils');
 
 const RESPONSE_OBJ = {
     'Content-Type': 'application/json; charset=utf-8',
@@ -12,7 +12,17 @@ const RESPONSE_OBJ = {
 // @route GET api/products
 async function getProducts(req, res) {
     try {
-        const products = await Product.findAll();
+        const {start, end, offset, limit } = parseIntObj(req.query);
+
+        let products;
+
+        if(start >=0 && end >= 0) {
+            products = await Product.findInRange(start, end);
+        } else if (offset >= 0 && limit >= 0) {
+            products = await Product.findFromOffset(offset, limit);
+        } else {
+            products = await Product.findAll();
+        }
 
         res.writeHead(200, RESPONSE_OBJ);
 
