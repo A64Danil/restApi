@@ -1,5 +1,6 @@
 const http = require('http');
-const express = require('express')
+const express = require('express');
+const router = require("./routes");
 const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./controllers/productController');
 const fs = require('fs');
 const cors = require('cors')
