@@ -12,3 +12,4 @@ dist/
 upload/
 /.ORIGeslintrc.json
 package-lock.json
+dbEnv.json

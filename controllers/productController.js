@@ -21,12 +21,13 @@ async function getProducts(req, res) {
         } else if (offset >= 0 && limit >= 0) {
             products = await Product.findFromOffset(offset, limit);
         } else {
-            products = await Product.findAll();
+            // products = await Product.findAll();
+            products = await Product.getAllTest(req, res);
         }
 
-        res.writeHead(200, RESPONSE_OBJ);
+        // res.writeHead(200, RESPONSE_OBJ);
 
-        res.end(JSON.stringify(products))
+        // res.end(JSON.stringify(products))
     } catch (e) {
         console.log(e)
     }
