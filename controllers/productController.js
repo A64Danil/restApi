@@ -1,4 +1,4 @@
-const Product = require('../models/productsModel');
+const Product = require('../server/models/productsModel');
 
 const {getPostData, formDataToObj, parseIntObj} = require('../utils');
 

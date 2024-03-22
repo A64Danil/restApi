@@ -17,3 +17,14 @@
 5. **Может ли эта функция быть переиспользована в других частях приложения?**
     - Если да, это, вероятно, должен быть метод сервиса.
     - Если функция предназначена только для выполнения специфической задачи в контексте модели или контроллера, она может быть методом модели или контроллера соответственно.
+
+
+**Middlewares follow certain specific format. It goes like this…**
+
+    function xyzMiddleware(req, res, next){ 
+      // stuffs to do 
+      // add stuffs to request, or change req paramaters, 
+      // do whatever you want with those objects, 
+      // but once the task is done, call `next()` 
+    }
+
