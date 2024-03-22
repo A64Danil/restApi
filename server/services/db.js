@@ -1,6 +1,6 @@
 const mysql = require('mysql')
 
-const DBconfig = require('../dbEnv.json');
+const DBconfig = require('../../dbEnv.json');
 
 const connection = mysql.createConnection(DBconfig)
 
