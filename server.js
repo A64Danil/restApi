@@ -1,26 +1,22 @@
 const http = require('http');
 const express = require('express');
 const router = require("./routes");
+const AppError = require("./utils/appError");
+const errorHandler = require("./utils/errorHandler")
+
 const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./controllers/productController');
+
 const fs = require('fs');
 const cors = require('cors')
 const app = express();
 
 app.use(cors())
-//
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "http://localhost:63342",);
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     // 'Content-Type': 'application/json; charset=utf-8',
-//     next();
-// });
-//
-// app.options("/*", function(req, res, next){
-//     res.header('Access-Control-Allow-Origin', "http://localhost:63342",);
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-//     res.send(200);
-// });
+
+app.all("*", (req, res, next) => {
+    next(new AppError(`The URL ${req.originalUrl} does not exists`, 404));
+});
+app.use(errorHandler);
+
 
 // TODO: выяснить почему не прилетает префлайт реквест в экспресс!!!
 app.get('/', (req, res) => {
@@ -52,7 +48,6 @@ app.get('/api/products/:id', (req, res) => {
 app.post('/api/products', (req, res) => {
     createProduct(req, res);
 });
-
 
 app.put('/api/products/:id', (req, res) => {
     const id = req.params.id;
