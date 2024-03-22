@@ -1,6 +1,6 @@
-const Product = require('../server/models/productsModel');
+const Product = require('../models/productsModel');
 
-const {getPostData, formDataToObj, parseIntObj} = require('../utils');
+const {getPostData, formDataToObj, parseIntObj} = require('../../utils');
 
 const RESPONSE_OBJ = {
     'Content-Type': 'application/json; charset=utf-8',

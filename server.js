@@ -4,7 +4,7 @@ const router = require("./server/routes");
 const AppError = require("./utils/appError");
 const errorHandler = require("./utils/errorHandler")
 
-const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./controllers/productController');
+const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('./server/controllers/productController');
 
 const fs = require('fs');
 const cors = require('cors')
