@@ -34,7 +34,6 @@ class ActiveRecordEntity {
         return res.join('')
     }
 
-
     // private
     camelCaseToUnderscore(source) {
         return source.replace( /([A-Z])/g, "_$1").toLowerCase();
@@ -42,32 +41,15 @@ class ActiveRecordEntity {
 
     //private
     mapPropertiesToDbFormat() {
-        // TODO: перебрать
-
-        // ReflectionObject позволяет получить информацию о методах, свойствах и других деталях объекта, таких как его класс, родительские классы, интерфейсы, установленные свойства и методы и многое другое. Он предоставляет мощные возможности для интроспекции (изучения) объектов во время выполнения программы, что может быть полезно для отладки, анализа кода, создания динамических структур данных и других задач.
-        //
-        //     Пример использования ReflectionObject может включать получение списка методов и их атрибутов для объекта, получение списка свойств объекта и их значений, а также выполнение других операций, которые требуют знания структуры объекта во время выполнения.
-        const reflector = new ReflectionObject(this);
-
-        const properties = reflector.getProperties();
-
-
-
+        const properties = Object.keys(this)
         const mappedProperties = [];
 
-        foreach ($properties as $property) {
-
-            const propertyName = $property.getName();
-
-            const propertyNameAsUnderscore = this[this.camelCaseToUnderscore(propertyName)];
-
-            mappedProperties[propertyNameAsUnderscore] = this[propertyName];
-
+        for (let property of properties) {
+            const propertyNameAsUnderscore = this.camelCaseToUnderscore(property);
+            mappedProperties[propertyNameAsUnderscore] = this[property];
         }
 
-
         return mappedProperties;
-
     }
 
 

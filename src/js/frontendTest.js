@@ -140,9 +140,29 @@ function camelCaseToUnderscore(source) {
     return source.replace( /([A-Z])/g, "_$1").toLowerCase();
 }
 
+function mapPropertiesToDbFormat(objThis) {
 
-// console.log(underscoreToCamelCase("hello_test"));
-// console.log(underscoreToCamelCase("_hello_test"));
-// console.log(underscoreToCamelCase("Hello_test"));
-// console.log(underscoreToCamelCase("Hello_Test"));
-console.log(camelCaseToUnderscore("helloTest"));
+    const properties = Object.keys(objThis)
+
+
+    const mappedProperties = [];
+
+    for (let property of properties) {
+
+        const propertyNameAsUnderscore = camelCaseToUnderscore(property);
+        mappedProperties[propertyNameAsUnderscore] = objThis[property];
+
+    }
+
+
+    return mappedProperties;
+
+}
+
+const testObject = {
+    humanAge: 23,
+    humanName: "Danil",
+    someFunction: () => 3,
+}
+
+console.log(mapPropertiesToDbFormat(testObject));
