@@ -119,3 +119,24 @@ window.addEventListener('load', async function (){
     });
     console.log(result)
 })
+
+
+
+function ucFirst(string) {
+    return string[0].toUpperCase() + string.slice(1);
+}
+
+function lcFirst(string) {
+    return string[0].toLowerCase() + string.slice(1);
+}
+
+function underscoreToCamelCase(source){
+    const res = source.split('_').filter(s => s.length).map(ucFirst);
+    res[0] = lcFirst(res[0]);
+    return res.join('')
+}
+
+console.log(underscoreToCamelCase("hello_test"));
+console.log(underscoreToCamelCase("_hello_test"));
+console.log(underscoreToCamelCase("Hello_test"));
+console.log(underscoreToCamelCase("Hello_Test"));

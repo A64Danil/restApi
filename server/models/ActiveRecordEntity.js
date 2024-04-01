@@ -1,4 +1,5 @@
 let db = require('../services/db')
+let { ucFirst, lcFirst } = require('../../utils/helpers')
 
 class ActiveRecordEntity {
 
@@ -28,10 +29,10 @@ class ActiveRecordEntity {
 
     // Privat?
     underscoreToCamelCase(source){
-        // TODO: перебрать
-        // return lcfirst(str_replace('_', '', ucwords($source, '_')));
+        const res = source.split('_').filter(s => s.length).map(ucFirst);
+        res[0] = lcFirst(res[0]);
+        return res.join('')
     }
-
 
 
     // private
