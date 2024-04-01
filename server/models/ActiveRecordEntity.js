@@ -37,8 +37,7 @@ class ActiveRecordEntity {
 
     // private
     camelCaseToUnderscore(source) {
-        // TODO: перебрать
-        // return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $source));
+        return source.replace( /([A-Z])/g, "_$1").toLowerCase();
     }
 
     //private

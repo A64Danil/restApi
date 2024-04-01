@@ -136,7 +136,13 @@ function underscoreToCamelCase(source){
     return res.join('')
 }
 
-console.log(underscoreToCamelCase("hello_test"));
-console.log(underscoreToCamelCase("_hello_test"));
-console.log(underscoreToCamelCase("Hello_test"));
-console.log(underscoreToCamelCase("Hello_Test"));
+function camelCaseToUnderscore(source) {
+    return source.replace( /([A-Z])/g, "_$1").toLowerCase();
+}
+
+
+// console.log(underscoreToCamelCase("hello_test"));
+// console.log(underscoreToCamelCase("_hello_test"));
+// console.log(underscoreToCamelCase("Hello_test"));
+// console.log(underscoreToCamelCase("Hello_Test"));
+console.log(camelCaseToUnderscore("helloTest"));
