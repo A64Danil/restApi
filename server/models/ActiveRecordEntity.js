@@ -102,21 +102,23 @@ class ActiveRecordEntity {
 
 
     //private function
-    insert(array) {
-        const filteredProperties = array_filter($mappedProperties);
+    insert(mappedProperties) {
+        // TODO: callback fn for filter???
+        const filteredProperties = mappedProperties.filter();
 
         const columns = [];
 
         const paramsNames = [];
 
-        const params2values = [];
+        const params2values = {};
 
-        foreach ($filteredProperties as $columnName => $value) {
+        for (let columnName in filteredProperties) {
+            let value = filteredProperties[columnName];
 
             // TODO: is this push ???
-            $columns[] = '`' . $columnName . '`';
+            columns.push('`' + columnName + '`');
 
-            const paramName = ':' . $columnName;
+            const paramName = ':' . columnName;
 
             paramsNames.push(paramName);
 
@@ -124,20 +126,25 @@ class ActiveRecordEntity {
 
         }
 
-        const columnsViaSemicolon = implode(', ', $columns);
+        console.log(columns);
+        console.log(paramsNames);
+        console.log(params2values);
 
-        const paramsNamesViaSemicolon = implode(', ', paramsNames);
+        const columnsViaSemicolon = columns.join(', ');
+
+        const paramsNamesViaSemicolon = paramsNames.join(', ');
 
 
-        const sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaSemicolon . ') VALUES (' . $paramsNamesViaSemicolon . ');';
+        const sql = 'INSERT INTO ' + this.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
 
 
+        // const db = Db.getInstance();
 
-        const db = Db.getInstance();
+        // const result = db.queryId($sql, params2values, static::class);
 
-        const result = db.queryId($sql, params2values, static::class);
+        // return result;
 
-        return result;
+        return [columnsViaSemicolon, paramsNamesViaSemicolon]
     }
 
     // public
