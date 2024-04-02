@@ -88,6 +88,7 @@ class ActiveRecordEntity {
             index++;
         }
 
+        // TODO: rewrite this.getTableName() to static methpod
         const sql = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ' + this.id;
 
         // const db = Db.getInstance();
