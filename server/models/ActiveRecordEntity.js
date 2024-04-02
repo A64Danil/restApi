@@ -57,12 +57,9 @@ class ActiveRecordEntity {
         const mappedProperties = this.mapPropertiesToDbFormat();
 
         if (this.id !== null) {
-
             this.update(mappedProperties);
             return 1;
-
         } else {
-
             return this.insert(mappedProperties);
         }
 
@@ -74,27 +71,31 @@ class ActiveRecordEntity {
 
         const columns2params = [];
 
-        const params2values = [];
+        const params2values = {};
 
         let index = 1;
 
-        foreach ($mappedProperties as $column => value) {
-            const param = ':param' . $index; // :param1
+        for (let column in mappedProperties) {
+            const value = mappedProperties[column];
+            const param = ':param' + index; // :param1
 
             // array
-            const columns2params = $column . ' = ' . $param; // column1 = :param1
+            columns2params.push(column + ' = ' + param); // column1 = :param1
 
             // array
-            const params2values[param] = value; // [:param1 => value1]
+            params2values[param] = value; // [:param1 => value1]
 
             index++;
         }
 
-        const sql = 'UPDATE ' . static::getTableName() . ' SET ' . implode(', ', $columns2params) . ' WHERE id = ' . $this->id;
+        const sql = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ' + this.id;
 
-        const db = Db.getInstance();
+        // const db = Db.getInstance();
 
-        db.query(sql, params2values);
+        // db.query(sql, params2values);
+
+        // TODO: убрать
+        return [columns2params, params2values];
 
     }
 
@@ -198,8 +199,7 @@ class ActiveRecordEntity {
     }
 
     //abstract protected static function
-    // TODO: why no body???
-    getTableName() {
-
+    static getTableName() {
+        throw new Error('You have to implement the method doSomething!');
     }
 }

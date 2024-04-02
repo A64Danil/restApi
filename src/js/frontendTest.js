@@ -159,10 +159,44 @@ function mapPropertiesToDbFormat(objThis) {
 
 }
 
+function update(mappedProperties) {
+
+    const columns2params = [];
+
+    const params2values = {};
+
+    let index = 1;
+
+    for (let column in mappedProperties) {
+        const value = mappedProperties[column];
+        const param = ':param' + index; // :param1
+
+        // array
+        columns2params.push(column + ' = ' + param); // column1 = :param1
+
+        // obj
+        params2values[param] = value; // [:param1 => value1]
+
+        index++;
+    }
+
+    // const sql = 'UPDATE ' . static::getTableName() . ' SET ' . implode(', ', $columns2params) . ' WHERE id = ' . $this->id;
+
+    // const db = Db.getInstance();
+
+    // db.query(sql, params2values);
+
+    return [columns2params, params2values];
+
+}
+
 const testObject = {
     humanAge: 23,
     humanName: "Danil",
     someFunction: () => 3,
 }
 
-console.log(mapPropertiesToDbFormat(testObject));
+const mappedProps = mapPropertiesToDbFormat(testObject);
+
+console.log(update(mappedProps));
+
