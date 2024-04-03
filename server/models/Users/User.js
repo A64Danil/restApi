@@ -1,9 +1,11 @@
 const ActiveRecordEntity = require('../ActiveRecordEntity')
-
+//const AppError = require('../../../utils/appError')
 // namespace MyProject\Models\Users;
 
 // use MyProject\Exceptions\InvalidArgumentException;
 // use MyProject\Models\ActiveRecordEntity;
+
+
 
 class User extends ActiveRecordEntity {
     
