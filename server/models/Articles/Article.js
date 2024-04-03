@@ -2,76 +2,79 @@ const ActiveRecordEntity = require('../ActiveRecordEntity')
 
 // use MyProject\Models\Users\User;
 
+class Article extends ActiveRecordEntity {
 
-class Article extends ActiveRecordEntity
-{
-
-
-    protected $name;
+    @name
 
 
-    protected $text;
+    @text
 
 
-    protected $authorId;
+    @authorId
 
 
-    protected $createdAt;
+    @createdAt
 
 
-    public function getName(): string
-    {
-
-        return $this->name;
-
-    }
-
-    public function setName(string $value): void
-    {
-
-        $this->name = $value;
-
-    }
-
-
-    public function getText(): string
-    {
-
-        return $this->text;
-
-    }
-
-    public function setText(string $value): void
-    {
-
-        $this->text = $value;
-
-    }
-
-    public function getAuthor(): User
-    {
-
-        return User::getById($this->authorId);
-
+    /**
+     * Get a name. (public function)
+     * @return {string} An article name.
+     */
+    getName() {
+        return this.name;
     }
 
     /**
-     * @param User $author
+     * Set a name. (public function)
+     * @param {string} value - New name for article.
+     * @return {void}
      */
-
-    public function setAuthor(User $author): void
-    {
-
-        $this->authorId = $author->getId();
-
+    setName(value) {
+        this.name = value;
     }
 
 
-    protected static function getTableName(): string
-    {
+    /**
+     * Get a text. (public function)
+     * @return {string} An article text.
+     */
+    getText() {
+        return this.text;
+    }
 
+    /**
+     * Set a text. (public function)
+     * @param {string} value
+     * @return {void}
+     */
+    setText(value) {
+        this.text = value;
+    }
+
+    /**
+     * Get an author. (public function)
+     * @return {User} An article author (type USER).
+     */
+    getAuthor() {
+        return User.getById(this.authorId);
+    }
+
+
+    /**
+     * Set a new author. (public function)
+     * @param (User) author
+     * @return {void}
+     */
+    setAuthor(author){
+        this.authorId = author.getId();
+    }
+
+    /**
+     * Get table name. (protected static function)
+     * @return {string}
+     */
+    getTableName() {
         return 'articles';
-
     }
 
 }
