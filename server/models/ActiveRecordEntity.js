@@ -140,7 +140,7 @@ class ActiveRecordEntity {
 
         // const db = Db.getInstance();
 
-        // const result = db.queryId($sql, params2values, static::class);
+        // const result = db.queryId($sql, params2values, this.constructor);
 
         // return result;
 
@@ -165,17 +165,17 @@ class ActiveRecordEntity {
      */
     // public static function
     findAll() {
-        const db = Db.getInstance();
+        //const db = Db.getInstance();
 
-        return db.query('SELECT * FROM `' . this.constructor.getTableName() . '`;', [], static::class);
+        // return db.query('SELECT * FROM `' + this.constructor.getTableName() + '`;', [], this.constructor);
     }
 
 
     //public static function
     findOneByColumn(columnName, value) {
-        const db = Db.getInstance();
+        // const db = Db.getInstance();
 
-        const result = db.query('SELECT * FROM `' . this.constructor.getTableName() . '` WHERE `' . $columnName . '` = :value LIMIT 1;', ':value' => $value],static::class);
+        // const result = db.query('SELECT * FROM `' + this.constructor.getTableName() + '` WHERE `' + columnName + '` = :value LIMIT 1;',[':value' => value], this.constructor);
 
         if (result.length === 0) {
             return null;
@@ -196,11 +196,10 @@ class ActiveRecordEntity {
 
     //public static function
     getById(id) {
+        // const db = Db::getInstance();
 
-        const db = Db::getInstance();
-
-        const entities = db.query('SELECT * FROM `' . this.constructor.getTableName() . '` WHERE id=:id;',  [':id' => $id],
-        static::class);
+        // const entities = db.query('SELECT * FROM `' + this.constructor.getTableName() + '` WHERE id=:id;',  [':id' => id],
+        this.constructor);
 
         return entities ? entities[0] : null;
 
