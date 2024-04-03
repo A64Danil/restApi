@@ -135,7 +135,7 @@ class ActiveRecordEntity {
         const paramsNamesViaSemicolon = paramsNames.join(', ');
 
 
-        const sql = 'INSERT INTO ' + this.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
+        const sql = 'INSERT INTO ' + this.constructor.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
 
 
         // const db = Db.getInstance();
@@ -149,9 +149,9 @@ class ActiveRecordEntity {
 
     // public
     delete() {
-        const db = Db.getInstance();
+        // const db = Db.getInstance();
 
-        db.query('DELETE FROM `' . static::getTableName() . '` WHERE id = :id', [':id' => $this->id]);
+        // db.query('DELETE FROM `' + this.constructor.getTableName() + '` WHERE id = :id', [':id' => this.id]);
 
         this.id = null;
 
@@ -167,7 +167,7 @@ class ActiveRecordEntity {
     findAll() {
         const db = Db.getInstance();
 
-        return db.query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
+        return db.query('SELECT * FROM `' . this.constructor.getTableName() . '`;', [], static::class);
     }
 
 
@@ -175,7 +175,7 @@ class ActiveRecordEntity {
     findOneByColumn(columnName, value) {
         const db = Db.getInstance();
 
-        const result = db.query('SELECT * FROM `' . static::getTableName() . '` WHERE `' . $columnName . '` = :value LIMIT 1;', ':value' => $value],static::class);
+        const result = db.query('SELECT * FROM `' . this.constructor.getTableName() . '` WHERE `' . $columnName . '` = :value LIMIT 1;', ':value' => $value],static::class);
 
         if (result.length === 0) {
             return null;
@@ -199,7 +199,7 @@ class ActiveRecordEntity {
 
         const db = Db::getInstance();
 
-        const entities = db.query('SELECT * FROM `' . static::getTableName() . '` WHERE id=:id;',  [':id' => $id],
+        const entities = db.query('SELECT * FROM `' . this.constructor.getTableName() . '` WHERE id=:id;',  [':id' => $id],
         static::class);
 
         return entities ? entities[0] : null;
