@@ -193,9 +193,7 @@ class ActiveRecordEntity {
      * @return static|null
 
      */
-
-    //public static function
-    getById(id) {
+    static getById(id) {
         // const db = Db::getInstance();
 
         // const entities = db.query('SELECT * FROM `' + this.constructor.getTableName() + '` WHERE id=:id;',  [':id' => id],this.constructor);

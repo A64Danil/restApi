@@ -1,6 +1,6 @@
 const ActiveRecordEntity = require('../ActiveRecordEntity')
+// const User = require('../Users/User') // возможно не надо
 
-// use MyProject\Models\Users\User;
 
 class Article extends ActiveRecordEntity {
 
@@ -56,7 +56,8 @@ class Article extends ActiveRecordEntity {
      * @return {User} An article author (type USER).
      */
     getAuthor() {
-        return User.getById(this.authorId);
+        // TODO: check this
+        return ActiveRecordEntity.getById(this.authorId);
     }
 
 
