@@ -1,4 +1,4 @@
-let db = require('../services/db')
+const { conn } = require("../services/db");
 let { ucFirst, lcFirst } = require('../../utils/helpers')
 
 class ActiveRecordEntity {
@@ -164,10 +164,11 @@ class ActiveRecordEntity {
 
      */
     // public static function
-    findAll() {
-        //const db = Db.getInstance();
-
-        // return db.query('SELECT * FROM `' + this.constructor.getTableName() + '`;', [], this.constructor);
+    async findAll() {
+        // TODO: постараться переделать на статик
+        console.log('inside findAll, before return')
+        const [rows, fields] = await conn.query("SELECT * FROM " + this.constructor.getTableName());
+        return [rows, fields];
     }
 
 
@@ -204,7 +205,7 @@ class ActiveRecordEntity {
 
     //abstract protected static function
     static getTableName() {
-        throw new Error('You have to implement the method doSomething!');
+        throw new Error('You have to implement the method getTableName!');
     }
 }
 

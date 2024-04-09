@@ -1,10 +1,8 @@
-const ActiveRecordEntity = require('../ActiveRecordEntity')
+const { ActiveRecordEntity } = require('../ActiveRecordEntity')
 //const AppError = require('../../../utils/appError')
 // namespace MyProject\Models\Users;
 
 // use MyProject\Exceptions\InvalidArgumentException;
-// use MyProject\Models\ActiveRecordEntity;
-
 
 
 class User extends ActiveRecordEntity {
@@ -53,7 +51,7 @@ class User extends ActiveRecordEntity {
      * Get table name. (protected static function)
      * @return {string}
      */
-    getTableName(){
+    static getTableName(){
         return 'users';
     }
 
