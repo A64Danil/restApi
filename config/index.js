@@ -9,4 +9,5 @@ let defaultConfig = {
     env: env
 };
 
+//  TODO: Может через Object.assign мы получим то же самое?
 module.exports = _.merge(defaultConfig, envConfig);
