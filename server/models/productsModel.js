@@ -1,6 +1,6 @@
 const dataArray = require('../../data/testData.json');
 const { v4: uuidv4 } = require('uuid');
-const conn = require("../services/db");
+const { conn } = require("../services/db");
 
 function findAll() {
     return new Promise((resolve, reject)=>{
