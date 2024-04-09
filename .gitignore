@@ -9,6 +9,7 @@ out/
 node_modules/
 coverage/
 dist/
+/config/db.js
 upload/
 /.ORIGeslintrc.json
 package-lock.json
