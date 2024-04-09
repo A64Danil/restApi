@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -31,12 +31,13 @@ module.exports = function() {
         server.use(cookieParser());
         server.use(logger('dev'));
         server.use(passport.initialize());
-        mongoose.connect(db.database, {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true
-        });
-        require('../configs/passport')(passport);
+        // TODO: убрали монгус, но зачем тут еще и паспорт?
+        // mongoose.connect(db.database, {
+        //     useNewUrlParser: true,
+        //     useCreateIndex: true,
+        //     useUnifiedTopology: true
+        // });
+        // require('../configs/passport')(passport);
 
         server.use('/uploads', express.static('uploads'));
 
