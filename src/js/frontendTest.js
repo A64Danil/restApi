@@ -200,3 +200,40 @@ const mappedProps = mapPropertiesToDbFormat(testObject);
 
 console.log(update(mappedProps));
 
+
+class Test {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getName() {
+        return this.name
+    }
+
+    static t() {
+        if(this === Test) {
+            return this;
+        } else {
+            return this.eho();
+        }
+
+    }
+}
+
+class Sec extends Test {
+    // constructor(lName) {
+    //     // super(props);
+    //     this.lastName =  lName;
+    // }
+
+    static eho() {
+        return "hello"
+    }
+
+}
+
+
+// console.log(Test);
+console.log(Test.t());
+// console.log(Sec);
+console.log(Sec.t());
