@@ -135,7 +135,7 @@ class ActiveRecordEntity {
         const paramsNamesViaSemicolon = paramsNames.join(', ');
 
 
-        const sql = 'INSERT INTO ' + this.constructor.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
+        const sql = 'INSERT INTO ' + this.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
 
 
         // const db = Db.getInstance();
@@ -151,7 +151,7 @@ class ActiveRecordEntity {
     delete() {
         // const db = Db.getInstance();
 
-        // db.query('DELETE FROM `' + this.constructor.getTableName() + '` WHERE id = :id', [':id' => this.id]);
+        // db.query('DELETE FROM `' + this.getTableName() + '` WHERE id = :id', [':id' => this.id]);
 
         this.id = null;
 
@@ -172,16 +172,15 @@ class ActiveRecordEntity {
 
 
     //public static function
-    findOneByColumn(columnName, value) {
-        // const db = Db.getInstance();
+    static async findOneByColumn(columnName, value) {
+        // const result = db.query('SELECT * FROM `' + this.getTableName() + '` WHERE `' + columnName + '` = :value LIMIT 1;',[':value' => value], this.constructor);
+        const [rows] = await conn.query('SELECT * FROM `' + this.getTableName() + '` WHERE `' + columnName + '` = ? LIMIT 1;',[value]);
 
-        // const result = db.query('SELECT * FROM `' + this.constructor.getTableName() + '` WHERE `' + columnName + '` = :value LIMIT 1;',[':value' => value], this.constructor);
-
-        if (result.length === 0) {
+        if (rows.length === 0) {
             return null;
         }
 
-        return result[0];
+        return rows[0];
 
     }
 
@@ -193,13 +192,9 @@ class ActiveRecordEntity {
      * @return static|null
 
      */
-    static getById(id) {
-        // const db = Db::getInstance();
-
-        // const entities = db.query('SELECT * FROM `' + this.constructor.getTableName() + '` WHERE id=:id;',  [':id' => id],this.constructor);
-
-        return entities ? entities[0] : null;
-
+    static async getById(id) {
+        const [rows] = await conn.query('SELECT * FROM `' + this.getTableName() + '` WHERE id=?;',  [id]);
+        return rows ? rows[0] : null;
     }
 
     //abstract protected static function

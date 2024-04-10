@@ -3,21 +3,75 @@
 const jwt = require('jsonwebtoken');
 const db = require('../../../dbEnv.json');
 
+
+const {getPostData, formDataToObj, parseIntObj} = require('../../../utils');
+
+
 const { User } = require('../../models/Users/User');
 
-async function getAllUsers(request, response) {
+async function getAllUsers(req, res) {
     const data = await User.findAll();
     console.log('data in getAllUsers')
     console.log(data)
-    response.status(200).json({
+    res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+    });
+}
+
+async function getUserById(req, res) {
+
+    // let data = req.body;
+    // let data = parseIntObj(req.query);;
+    const id = req.params.id;
+
+    console.log('id: ', id)
+    const data = await User.getById(id);
+
+
+    // TODO: сделать действие на случай если будет ошибка (юзер не найден)
+    res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+    });
+
+    // userService.getUserByName(id)
+    //     .then(user => {
+    //         // Обработка успешного выполнения запроса
+    //         res.json(user);
+    //     })
+    //     .catch(error => {
+    //         // Обработка ошибки
+    //         res.status(500).json({ error: 'Internal Server Error' });
+    //     });
+}
+
+
+// TODO: не уверен что оно должно работать именно так
+async function getUserByName(req, res) {
+
+    // let data = req.body;
+    // let data = parseIntObj(req.query);;
+    const id = req.params.id;
+
+    console.log('id: ', id)
+    // TODO: понять как вытаскивать из запроса параметры поиска юзера
+    const data = await User.findOneByColumn('name', "Max" );
+    // console.log('data in getAllUsers')
+    console.log(data)
+
+
+    res.status(200).json({
         status: "success",
         length: data?.length,
         data: data,
     });
 }
 //
-// function loginUser(request, response) {
-//     let { email, password } = request.body;
+// function loginUser(req, res) {
+//     let { email, password } = req.body;
 //
 //     User.findOne({
 //         email: email
@@ -25,7 +79,7 @@ async function getAllUsers(request, response) {
 //         if (error) throw error;
 //
 //         if (!user) {
-//             return response.send({
+//             return res.send({
 //                 success: false,
 //                 message: 'User not found.',
 //             });
@@ -38,10 +92,10 @@ async function getAllUsers(request, response) {
 //                     expiresIn: 10080
 //                 });
 //
-//                 return response.json({ success: true, token: 'JWT ' + token });
+//                 return res.json({ success: true, token: 'JWT ' + token });
 //             }
 //
-//             response.send({
+//             res.send({
 //                 success: false,
 //                 message: 'Passwords did not match.',
 //             });
@@ -52,4 +106,6 @@ async function getAllUsers(request, response) {
 module.exports = {
     // loginUser: loginUser,
     getAllUsers,
+    getUserByName,
+    getUserById,
 };
