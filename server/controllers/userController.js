@@ -16,24 +16,54 @@ let router = express.Router();
 //     data: users,
 // });
 
-// TODO: попробовать использовать errorHandler
-router.get('/', async (req, res) => {
-    try {
-        const users = await userService.getAllUsers();
-        if (!users || !users.length) {
-            // res.status(404).json({ error: 'Users not found!' });
-            const err = new AppError('Users not found', 404);
+
+const Router = {};
+Router.get = function (path, handler) {
+    router.get(path, async (req, res) => {
+        try {
+            const data = await handler();
+            if (!data || !data.length) {
+                // res.status(404).json({ error: 'Users not found!' });
+                const err = new AppError('Users not found (from Router)', 404);
+                errorHandler(err, req, res)
+                return ;
+            }
+            res.json(data);
+        } catch (error) {
+            // Обработка ошибки
+            const err = new AppError('Internal Server Error', 500);
             errorHandler(err, req, res)
-            return ;
+            // res.status(500).json({error: 'Internal Server Error'});
         }
-        res.json(users);
-    } catch (error) {
-        // Обработка ошибки
-        const err = new AppError('Internal Server Error', 500);
-        errorHandler(err, req, res)
-        // res.status(500).json({error: 'Internal Server Error'});
-    }
-});
+    })
+}
+
+Router.get('/', userService.getAllUsers)
+
+
+
+
+
+
+
+// TODO: попробовать использовать errorHandler
+// router.get('/', async (req, res) => {
+//     try {
+//         const users = await userService.getAllUsers();
+//         if (!users || !users.length) {
+//             // res.status(404).json({ error: 'Users not found!' });
+//             const err = new AppError('Users not found', 404);
+//             errorHandler(err, req, res)
+//             return ;
+//         }
+//         res.json(users);
+//     } catch (error) {
+//         // Обработка ошибки
+//         const err = new AppError('Internal Server Error', 500);
+//         errorHandler(err, req, res)
+//         // res.status(500).json({error: 'Internal Server Error'});
+//     }
+// });
 
 router.get('/:id', userService.getUserById);
 
