@@ -1,52 +1,18 @@
 'use strict';
 
 const express = require('express');
-const errorHandler = require('../../utils/errorHandler');
 const userService = require('../services/user/user');
 
-const AppError = require('../../utils/appError');
+const Router = require('./router/routerController')
+
 
 let router = express.Router();
 
-// TODO: перенести в все обработки res.status из сервисов - сюда
 
-// res.status(200).json({
-//     status: "success",
-//     length: users?.length,
-//     data: users,
-// });
+// Router('/', userService.getAllUsers)
+Router.get(router, '/', userService.getAllUsers)
 
 
-const Router = {};
-Router.get = function (path, handler) {
-    router.get(path, async (req, res) => {
-        try {
-            const data = await handler();
-            if (!data || !data.length) {
-                // res.status(404).json({ error: 'Users not found!' });
-                const err = new AppError('Users not found (from Router)', 404);
-                errorHandler(err, req, res)
-                return ;
-            }
-            res.json(data);
-        } catch (error) {
-            // Обработка ошибки
-            const err = new AppError('Internal Server Error', 500);
-            errorHandler(err, req, res)
-            // res.status(500).json({error: 'Internal Server Error'});
-        }
-    })
-}
-
-Router.get('/', userService.getAllUsers)
-
-
-
-
-
-
-
-// TODO: попробовать использовать errorHandler
 // router.get('/', async (req, res) => {
 //     try {
 //         const users = await userService.getAllUsers();
@@ -56,6 +22,7 @@ Router.get('/', userService.getAllUsers)
 //             errorHandler(err, req, res)
 //             return ;
 //         }
+//         console.log('before end of response')
 //         res.json(users);
 //     } catch (error) {
 //         // Обработка ошибки
