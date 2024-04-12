@@ -56,10 +56,23 @@ const usersIDlist = document.querySelector('.usersIDlist');
 console.log(usersList);
 console.log(usersIDlist);
 
+async function getUser(id) {
+    const res = await fetch(URL + "/" + id);
+    const user = await res.json();
+    return user;
+}
+
+function updateForm(user) {
+    console.log(user);
+    console.log(putForm.elements)
+    putForm.elements.nickname.value = user.nickname;
+    putForm.elements.email.value = user.email;
+
+}
 
 window.addEventListener('load', async function (){
     console.log('Window was loaded');
-    const res = await fetch(URL, );
+    const res = await fetch(URL);
 
     const result = await res.json();
 
@@ -70,4 +83,13 @@ window.addEventListener('load', async function (){
         usersList.append(item)
         usersIDlist.append(option)
     });
+})
+
+
+usersIDlist.addEventListener('change', async function (e){
+    console.log('user changed');
+    console.log(usersIDlist.value);
+    const user = await getUser(usersIDlist.value);
+    updateForm(user);
+
 })
