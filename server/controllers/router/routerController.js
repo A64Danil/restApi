@@ -1,5 +1,6 @@
 // const express = require('express');
 
+const { getReturnedDataName } = require('../../../utils/helpers');
 const errorHandler = require('../../../utils/errorHandler');
 const AppError = require('../../../utils/appError');
 
@@ -10,21 +11,25 @@ class routerController {
     }
 
     get(path, handler) {
-        console.log(handler.name)
+        const dataName = getReturnedDataName(handler.name);
         this.router.get(path, async (req, res) => {
             try {
                 const data = await handler(req, res);
-                console.log(data)
 
                 // isArray
-                const isArray = Array.isArray(data);
-                if(isArray && !data.length) {
-                    const err = new AppError('Users not found (10-35)', 404);
-                    errorHandler(err, req, res)
-                    return ;
-                } else if (!data) {
-                    // res.status(404).json({ error: 'Users not found!' });
-                    const err = new AppError('User not found', 404);
+                // const isArray = Array.isArray(data);
+                // if(isArray && !data.length) {
+                //     const err = new AppError(`${dataName} not found (11-20)`, 404);
+                //     errorHandler(err, req, res)
+                //     return ;
+                // } else if (!data) {
+                //     const err = new AppError(`${dataName} not found (11)`, 404);
+                //     errorHandler(err, req, res)
+                //     return ;
+                // }
+
+                if (!data || !data.length) {
+                    const err = new AppError(`${dataName} not found`, 404);
                     errorHandler(err, req, res)
                     return ;
                 }
