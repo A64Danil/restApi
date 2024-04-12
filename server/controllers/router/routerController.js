@@ -4,21 +4,32 @@ const errorHandler = require('../../../utils/errorHandler');
 const AppError = require('../../../utils/appError');
 
 // let router = express.Router();
+class routerController {
+    constructor(router) {
+        this.router = router;
+    }
 
-const Router = {
-    get: (router, path, handler) => {
-        // TODO: нужно это как-то вернуть
-        router.get(path, async (req, res) => {
-
-            console.log('inside get in router')
+    get(path, handler) {
+        console.log(handler.name)
+        this.router.get(path, async (req, res) => {
             try {
-                const data = await handler();
-                if (!data || !data.length) {
+                const data = await handler(req, res);
+                console.log(data)
+
+                // isArray
+                const isArray = Array.isArray(data);
+                if(isArray && !data.length) {
+                    const err = new AppError('Users not found (10-35)', 404);
+                    errorHandler(err, req, res)
+                    return ;
+                } else if (!data) {
                     // res.status(404).json({ error: 'Users not found!' });
-                    const err = new AppError('Users not found (10-10)', 404);
+                    const err = new AppError('User not found', 404);
                     errorHandler(err, req, res)
                     return ;
                 }
+
+
                 res.json(data);
             } catch (error) {
                 // Обработка ошибки
@@ -28,6 +39,6 @@ const Router = {
             }
         })
     }
-};
+}
 
-module.exports = Router;
+module.exports = routerController;

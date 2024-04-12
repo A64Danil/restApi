@@ -226,6 +226,10 @@ class Sec extends Test {
     //     this.lastName =  lName;
     // }
 
+    userSome() {
+        console.log(this)
+    }
+
     static eho() {
         return "hello"
     }
@@ -237,3 +241,9 @@ class Sec extends Test {
 console.log(Test.t());
 // console.log(Sec);
 console.log(Sec.t());
+
+
+const secTest = new Sec('Danil');
+
+console.log(secTest)
+secTest.userSome();

@@ -3,15 +3,15 @@
 const express = require('express');
 const userService = require('../services/user/user');
 
-const Router = require('./router/routerController')
+const routerController = require('./router/routerController')
 
 
 let router = express.Router();
-
+const Router = new routerController(router);
 
 // Router('/', userService.getAllUsers)
-Router.get(router, '/', userService.getAllUsers)
-
+Router.get('/', userService.getAllUsers)
+Router.get('/:id', userService.getUserById);
 
 // router.get('/', async (req, res) => {
 //     try {
@@ -32,7 +32,7 @@ Router.get(router, '/', userService.getAllUsers)
 //     }
 // });
 
-router.get('/:id', userService.getUserById);
+
 
 // router.get('/', (req, res) => {
 //     const id = req.params.id;

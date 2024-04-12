@@ -24,14 +24,14 @@ async function getUserById(req, res) {
 
     console.log('id: ', id)
     const data = await User.getById(id);
+    return data;
 
-
-    // TODO: сделать действие на случай если будет ошибка (юзер не найден)
-    res.status(200).json({
-        status: "success",
-        length: data?.length,
-        data: data,
-    });
+    // // TODO: сделать действие на случай если будет ошибка (юзер не найден)
+    // res.status(200).json({
+    //     status: "success",
+    //     length: data?.length,
+    //     data: data,
+    // });
 
     // userService.getUserByName(id)
     //     .then(user => {
