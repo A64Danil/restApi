@@ -1,59 +1,35 @@
-console.log('test from js - 17:22')
+console.log('test from js - 11:22')
 
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
+function createListItem(obj) {
+    console.log(obj)
+    const li = document.createElement('li');
 
-function removeLineBreaks(str) {
-    if(str.indexOf('\n\n') !== -1) {
-        str = str.split('\n\n');
-    }  else if(str.indexOf('\r\n') !== -1) {
-        str = str.split('\r\n\r\n');
-    }
-    return str
+    let text = obj.id + " )";
+
+    if(obj.title) text += " " + obj.title;
+    if(obj.nickname) text += " " + obj.nickname;
+
+    li.textContent = text;
+
+    return li;
 }
 
-const URL = 'http://localhost:5000/api/products/';
+function createOptionItem(obj) {
+    const option = document.createElement('option');
+
+    let text = obj.id + " )";
+
+    if(obj.title) text += " " + obj.title;
+    if(obj.nickname) text += " " + obj.nickname;
+
+    option.value = obj.id;
+    option.textContent = text;
+
+    return option;
+}
+
+const URL = 'http://localhost:3000/api/v1/users';
 const putForm = document.getElementById('putForm');
-
-console.log(putForm);
-
-const fData = `------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"title\"\r\n\r\n1907\r\n------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n------WebKitFormBoundary7KFVcihQEuBPAYer\r\nContent-Disposition: form-data; name=\"price\"\r\n\r\n\r\n------WebKitFormBoundary7KFVcihQEuBPAYer--\r\n
-`;
-
-const rawEntries = [ [ 'title', 'TEwsf' ], [ 'description', '32' ], [ 'price', '2' ] ];
-const myObj = Object.fromEntries(rawEntries);
-console.log(myObj);
-
-
-console.log(fData.split('Content-Disposition: form-data; name='))
-
-const result = fData.split('Content-Disposition: form-data; name=')
-    .map( string => {
-        const sliceINDEX = string.indexOf('------WebKitFormBoundary');
-        let res = string.slice(0, sliceINDEX);
-
-        if(res.length <= 1) return [];
-
-        res = removeLineBreaks(res);
-
-
-        if(res[0]) res[0] = replaceAll(res[0],'"','')
-        if(res[1]) res[1] = res[1].trim();
-
-        // console.log(res)
-        return res
-    })
-    .filter( pair => pair.length > 1 && pair[1].length > 0)
-
-console.log(result)
-
-const params = Object.fromEntries(result)
-console.log(params)
-
 
 putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -77,173 +53,21 @@ putForm.addEventListener('submit', async (e) => {
 const usersList = document.querySelector('.usersList');
 const usersIDlist = document.querySelector('.usersIDlist');
 
+console.log(usersList);
+console.log(usersIDlist);
 
-function createListItem(obj) {
-    const li = document.createElement('li');
-
-    let text = obj.id.slice(0, 6) + " )";
-
-    if(obj.title) text += " " + obj.title;
-    if(obj.firstname) text += " " + obj.firstname;
-
-    li.textContent = text;
-
-    return li;
-}
-
-function createOptionItem(obj) {
-    const option = document.createElement('option');
-
-    let text = obj.id.slice(0, 6) + " )";
-
-    if(obj.title) text += " " + obj.title;
-    if(obj.firstname) text += " " + obj.firstname;
-
-    option.value = obj.id;
-    option.textContent = text;
-
-    return option;
-}
 
 window.addEventListener('load', async function (){
     console.log('Window was loaded');
-    const res = await fetch('http://localhost:5000/api/products', );
+    const res = await fetch(URL, );
 
     const result = await res.json();
 
+    // console.log(result)
     result.forEach(el => {
         const item = createListItem(el);
         const option = createOptionItem(el);
         usersList.append(item)
         usersIDlist.append(option)
     });
-    console.log(result)
 })
-
-
-
-function ucFirst(string) {
-    return string[0].toUpperCase() + string.slice(1);
-}
-
-function lcFirst(string) {
-    return string[0].toLowerCase() + string.slice(1);
-}
-
-function underscoreToCamelCase(source){
-    const res = source.split('_').filter(s => s.length).map(ucFirst);
-    res[0] = lcFirst(res[0]);
-    return res.join('')
-}
-
-function camelCaseToUnderscore(source) {
-    return source.replace( /([A-Z])/g, "_$1").toLowerCase();
-}
-
-function mapPropertiesToDbFormat(objThis) {
-
-    const properties = Object.keys(objThis)
-
-
-    const mappedProperties = [];
-
-    for (let property of properties) {
-
-        const propertyNameAsUnderscore = camelCaseToUnderscore(property);
-        mappedProperties[propertyNameAsUnderscore] = objThis[property];
-
-    }
-
-
-    return mappedProperties;
-
-}
-
-function update(mappedProperties) {
-
-    const columns2params = [];
-
-    const params2values = {};
-
-    let index = 1;
-
-    for (let column in mappedProperties) {
-        const value = mappedProperties[column];
-        const param = ':param' + index; // :param1
-
-        // array
-        columns2params.push(column + ' = ' + param); // column1 = :param1
-
-        // obj
-        params2values[param] = value; // [:param1 => value1]
-
-        index++;
-    }
-
-    // const sql = 'UPDATE ' . static::getTableName() . ' SET ' . implode(', ', $columns2params) . ' WHERE id = ' . $this->id;
-
-    // const db = Db.getInstance();
-
-    // db.query(sql, params2values);
-
-    return [columns2params, params2values];
-
-}
-
-const testObject = {
-    humanAge: 23,
-    humanName: "Danil",
-    someFunction: () => 3,
-}
-
-const mappedProps = mapPropertiesToDbFormat(testObject);
-
-console.log(update(mappedProps));
-
-
-class Test {
-    constructor(name) {
-        this.name = name;
-    }
-
-    getName() {
-        return this.name
-    }
-
-    static t() {
-        if(this === Test) {
-            return this;
-        } else {
-            return this.eho();
-        }
-
-    }
-}
-
-class Sec extends Test {
-    // constructor(lName) {
-    //     // super(props);
-    //     this.lastName =  lName;
-    // }
-
-    userSome() {
-        console.log(this)
-    }
-
-    static eho() {
-        return "hello"
-    }
-
-}
-
-
-// console.log(Test);
-console.log(Test.t());
-// console.log(Sec);
-console.log(Sec.t());
-
-
-const secTest = new Sec('Danil');
-
-console.log(secTest)
-secTest.userSome();
