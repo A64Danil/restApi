@@ -43,9 +43,8 @@ class routerController {
         const dataName = getReturnedDataName(handler.name);
         this.router.put(path, async (req, res) => {
             try {
-                // const product = await Product.findById(id);
-                const data = await handler(req, res);
-
+                // TODO: check this and change error messages
+                const data = await handler(req, res);)
                 // isArray
                 const isArray = Array.isArray(data);
                 if(isArray && !data.length) {
