@@ -67,36 +67,47 @@ class ActiveRecordEntity {
 
 
     // private function
-    update(mappedProperties) {
-
+    static async update(mappedProperties) {
+        console.log('mappedProperties')
+        console.log(mappedProperties)
         const columns2params = [];
 
         const params2values = {};
+        const values = [];
 
         let index = 1;
 
         for (let column in mappedProperties) {
             const value = mappedProperties[column];
-            const param = ':param' + index; // :param1
+            const param = '?'; // :param1
 
             // array
             columns2params.push(column + ' = ' + param); // column1 = :param1
 
             // array
             params2values[param] = value; // [:param1 => value1]
+            values.push(value); // [value1]
 
             index++;
         }
 
+
+        console.log(columns2params, params2values, values);
         // TODO: rewrite this.getTableName() to static methpod
-        const sql = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ' + this.id;
+        // const [rows, fields] = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ' + this.id;
+
+        // UPDATE `users` SET `nickname` = 'Petr4', `email` = 'petka@mymal.com1' WHERE `users`.`id` = 1
+        const query = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = 1 LIMIT 1;'
+        console.log(query)
+        const [rows, fields] = await conn.query(query,[...values]);
 
         // const db = Db.getInstance();
 
         // db.query(sql, params2values);
 
         // TODO: убрать
-        return [columns2params, params2values];
+        console.log(columns2params, params2values);
+        return rows;
 
     }
 
