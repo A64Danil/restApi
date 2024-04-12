@@ -9,7 +9,7 @@ const {getPostData, formDataToObj, parseIntObj} = require('../../../utils');
 
 const { User } = require('../../models/Users/User');
 
-async function getAllUsers(req, res) {
+async function getUsers(req, res) {
     const data = await User.findAll();
     // return data;
     // TODO: This is for tests, delete this
@@ -101,7 +101,7 @@ async function getUserByName(req, res) {
 
 module.exports = {
     // loginUser: loginUser,
-    getAllUsers,
+    getUsers,
     getUserByName,
     getUserById,
 };

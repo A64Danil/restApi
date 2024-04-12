@@ -10,7 +10,7 @@ let router = express.Router();
 const Router = new routerController(router);
 
 // Router('/', userService.getAllUsers)
-Router.get('/', userService.getAllUsers)
+Router.get('/', userService.getUsers)
 Router.get('/:id', userService.getUserById);
 
 // router.get('/', async (req, res) => {
