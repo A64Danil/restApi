@@ -11,9 +11,7 @@ const { User } = require('../../models/Users/User');
 
 async function getUsers(req, res) {
     const data = await User.findAll();
-    // return data;
-    // TODO: This is for tests, delete this
-    return [];
+    return data;
 }
 
 async function getUserById(req, res) {
