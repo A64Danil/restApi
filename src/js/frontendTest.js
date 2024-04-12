@@ -29,6 +29,7 @@ function createOptionItem(obj) {
 }
 
 const URL = 'http://localhost:3000/api/v1/users';
+const URL2 = 'http://localhost:3000/test';
 const putForm = document.getElementById('putForm');
 
 putForm.addEventListener('submit', async (e) => {
@@ -36,12 +37,22 @@ putForm.addEventListener('submit', async (e) => {
 
     const newData = new FormData(putForm);
     const userID = newData.get("id");
-
-    console.log(newData)
     console.log(userID)
+
+    // создаем пустой объект
+    const object = {};
+    // перебираем поля формы
+    newData.forEach(function (value, key) {
+            object[key] = value;
+        });
+    const json = JSON.stringify(object);
     let response = await fetch(URL + '/' + userID, {
         method: 'PUT',
-        body: newData
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: json
     });
 
     let result = await response.json();
