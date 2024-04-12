@@ -17,19 +17,13 @@ class routerController {
                 const data = await handler(req, res);
 
                 // isArray
-                // const isArray = Array.isArray(data);
-                // if(isArray && !data.length) {
-                //     const err = new AppError(`${dataName} not found (11-20)`, 404);
-                //     errorHandler(err, req, res)
-                //     return ;
-                // } else if (!data) {
-                //     const err = new AppError(`${dataName} not found (11)`, 404);
-                //     errorHandler(err, req, res)
-                //     return ;
-                // }
-
-                if (!data || !data.length) {
-                    const err = new AppError(`${dataName} not found`, 404);
+                const isArray = Array.isArray(data);
+                if(isArray && !data.length) {
+                    const err = new AppError(`${dataName} not found (11-20)`, 404);
+                    errorHandler(err, req, res)
+                    return ;
+                } else if (!data) {
+                    const err = new AppError(`${dataName} not found (11)`, 404);
                     errorHandler(err, req, res)
                     return ;
                 }
