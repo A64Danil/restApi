@@ -167,7 +167,7 @@ class ActiveRecordEntity {
     static async findAll() {
         // const [rows, fields] = await conn.query("SELECT * FROM " + this.getTableName());
         const [rows] = await conn.query("SELECT * FROM " + this.getTableName());
-        return [rows];
+        return rows;
     }
 
 
