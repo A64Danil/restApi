@@ -35,11 +35,11 @@ putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const newData = new FormData(putForm);
-    const userID = newData.get("userID");
+    const userID = newData.get("id");
 
     console.log(newData)
-    console.log()
-    let response = await fetch(URL + userID, {
+    console.log(userID)
+    let response = await fetch(URL + '/' + userID, {
         method: 'PUT',
         body: newData
     });
@@ -83,6 +83,8 @@ window.addEventListener('load', async function (){
         usersList.append(item)
         usersIDlist.append(option)
     });
+
+    updateForm(result[0])
 })
 
 
