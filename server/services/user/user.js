@@ -42,6 +42,15 @@ async function getUserById(req, res) {
     //     });
 }
 
+async function updateUserById(req, res) {
+    console.log('update')
+    const id = req.params.id;
+    console.log('id: ', id)
+    // TODO: дёргать нормальный метод на апдейт
+    const data = await User.getById(id);
+    return data;
+}
+
 
 // TODO: не уверен что оно должно работать именно так
 async function getUserByName(req, res) {
@@ -63,6 +72,7 @@ async function getUserByName(req, res) {
         data: data,
     });
 }
+
 //
 // function loginUser(req, res) {
 //     let { email, password } = req.body;
@@ -102,4 +112,5 @@ module.exports = {
     getUsers,
     getUserByName,
     getUserById,
+    updateUserById,
 };

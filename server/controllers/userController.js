@@ -9,9 +9,11 @@ const routerController = require('./router/routerController')
 let router = express.Router();
 const Router = new routerController(router);
 
-// Router('/', userService.getAllUsers)
 Router.get('/', userService.getUsers)
 Router.get('/:id', userService.getUserById);
+
+
+Router.put('/:id', userService.updateUserById);
 
 // router.get('/', async (req, res) => {
 //     try {
