@@ -43,11 +43,9 @@ async function getUserById(req, res) {
 }
 
 async function updateUserById(req, res) {
-    console.log('update')
-    const id = req.params.id;
-    console.log('id: ', id)
-    // TODO: дёргать нормальный метод на апдейт
-    const data = await User.getById(id);
+    console.log('updateUserById')
+    let body = req.body;
+    const data = await User.update(body);
     return data;
 }
 

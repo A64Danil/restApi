@@ -15,26 +15,6 @@ Router.get('/:id', userService.getUserById);
 
 Router.put('/:id', userService.updateUserById);
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const users = await userService.getAllUsers();
-//         if (!users || !users.length) {
-//             // res.status(404).json({ error: 'Users not found!' });
-//             const err = new AppError('Users not found', 404);
-//             errorHandler(err, req, res)
-//             return ;
-//         }
-//         console.log('before end of response')
-//         res.json(users);
-//     } catch (error) {
-//         // Обработка ошибки
-//         const err = new AppError('Internal Server Error', 500);
-//         errorHandler(err, req, res)
-//         // res.status(500).json({error: 'Internal Server Error'});
-//     }
-// });
-
-
 
 // router.get('/', (req, res) => {
 //     const id = req.params.id;
