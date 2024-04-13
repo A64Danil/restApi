@@ -28,8 +28,36 @@ function createOptionItem(obj) {
 }
 
 const URL = 'http://localhost:3000/api/v1/users';
-const URL2 = 'http://localhost:3000/test';
 const putForm = document.getElementById('putForm');
+const postForm = document.getElementById('postForm');
+
+postForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const newData = new FormData(putForm);
+
+    // создаем пустой объект
+    const object = {};
+    // перебираем поля формы
+    newData.forEach(function (value, key) {
+            object[key] = value;
+        });
+    const json = JSON.stringify(object);
+    console.log('sended data', json)
+    let response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: json
+    });
+
+    let result = await response.json();
+    console.log(result);
+
+    getUsers();
+})
 
 putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
