@@ -15,37 +15,19 @@ async function getUsers(req, res) {
 }
 
 async function getUserById(req, res) {
-
-    // let data = req.body;
-    // let data = parseIntObj(req.query);;
     const id = req.params.id;
 
-    console.log('id: ', id)
     const data = await User.getById(id);
     return data;
-
-    // // TODO: сделать действие на случай если будет ошибка (юзер не найден)
-    // res.status(200).json({
-    //     status: "success",
-    //     length: data?.length,
-    //     data: data,
-    // });
-
-    // userService.getUserByName(id)
-    //     .then(user => {
-    //         // Обработка успешного выполнения запроса
-    //         res.json(user);
-    //     })
-    //     .catch(error => {
-    //         // Обработка ошибки
-    //         res.status(500).json({ error: 'Internal Server Error' });
-    //     });
 }
 
 async function updateUserById(req, res) {
     console.log('updateUserById')
-    const body = req.body;
     const id = req.params.id;
+    const user = await User.getById(id);
+    if (!user) return null
+
+    const body = req.body;
     const data = await User.update(id, body);
     return data;
 }
