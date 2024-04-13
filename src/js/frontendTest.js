@@ -1,7 +1,6 @@
 console.log('test from js - 11:22')
 
 function createListItem(obj) {
-    console.log(obj)
     const li = document.createElement('li');
 
     let text = obj.id + " )";
@@ -46,6 +45,7 @@ putForm.addEventListener('submit', async (e) => {
             object[key] = value;
         });
     const json = JSON.stringify(object);
+    console.log('sended data', json)
     let response = await fetch(URL + '/' + userID, {
         method: 'PUT',
         headers: {
@@ -56,8 +56,9 @@ putForm.addEventListener('submit', async (e) => {
     });
 
     let result = await response.json();
+    console.log(result);
 
-    console.log(result)
+    getUsers();
 })
 
 
@@ -81,23 +82,32 @@ function updateForm(user) {
 
 }
 
-window.addEventListener('load', async function (){
-    console.log('Window was loaded');
-    const res = await fetch(URL);
-
-    const result = await res.json();
-
-    // console.log(result)
-    result.forEach(el => {
+function updateLists(data) {
+    usersList.innerHTML = null;
+    usersIDlist.innerHTML = null;
+    data.forEach(el => {
         const item = createListItem(el);
         const option = createOptionItem(el);
         usersList.append(item)
         usersIDlist.append(option)
     });
 
-    updateForm(result[0])
-})
+}
 
+async function getUsers(){
+    const res = await fetch(URL);
+
+    const result = await res.json();
+
+    // console.log(result)
+    updateLists(result);
+    updateForm(result[0])
+}
+
+window.addEventListener('load', async function (){
+    console.log('Window was loaded');
+    await getUsers();
+})
 
 usersIDlist.addEventListener('change', async function (e){
     console.log('user changed');
