@@ -44,7 +44,7 @@ class routerController {
         this.router.put(path, async (req, res) => {
             try {
                 // TODO: check this and change error messages
-                const data = await handler(req, res);)
+                const data = await handler(req, res);
                 // isArray
                 const isArray = Array.isArray(data);
                 if(isArray && !data.length) {
