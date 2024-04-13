@@ -16,14 +16,13 @@ class routerController {
             try {
                 const data = await handler(req, res);
 
-                // isArray
                 const isArray = Array.isArray(data);
                 if(isArray && !data.length) {
-                    const err = new AppError(`${dataName} not found (11-20)`, 404);
+                    const err = new AppError(`${dataName} not found`, 404);
                     errorHandler(err, req, res)
                     return ;
                 } else if (!data) {
-                    const err = new AppError(`${dataName} not found (11)`, 404);
+                    const err = new AppError(`${dataName} not found`, 404);
                     errorHandler(err, req, res)
                     return ;
                 }
@@ -43,27 +42,18 @@ class routerController {
         const dataName = getReturnedDataName(handler.name);
         this.router.put(path, async (req, res) => {
             try {
-                // TODO: check this and change error messages
                 const data = await handler(req, res);
-                // isArray
-                const isArray = Array.isArray(data);
-                if(isArray && !data.length) {
-                    const err = new AppError(`${dataName} not found (11-20)`, 404);
-                    errorHandler(err, req, res)
-                    return ;
-                } else if (!data) {
-                    const err = new AppError(`${dataName} not found (11)`, 404);
+
+                if (!data) {
+                    const err = new AppError(`${dataName} not found`, 404);
                     errorHandler(err, req, res)
                     return ;
                 }
 
-
                 res.json(data);
             } catch (error) {
-                // Обработка ошибки
                 const err = new AppError('Internal Server Error', 500);
                 errorHandler(err, req, res)
-                // res.status(500).json({error: 'Internal Server Error'});
             }
         })
 
