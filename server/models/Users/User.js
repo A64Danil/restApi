@@ -7,6 +7,8 @@ const { ActiveRecordEntity } = require('../ActiveRecordEntity')
 
 class User extends ActiveRecordEntity {
     
+    #name
+
     #nickname
 
     #email
@@ -20,6 +22,15 @@ class User extends ActiveRecordEntity {
     #authToken
 
     #createdAt
+
+    /**
+     * Get a name. (public function)
+     * @return {string} The nname.
+     */
+    getName() {
+        return this.#name;
+
+    }
 
     /**
      * Get a nickname. (public function)
