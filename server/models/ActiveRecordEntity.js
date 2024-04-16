@@ -7,9 +7,9 @@ class ActiveRecordEntity {
     id;
 
 
-    constructor() {
-        this.id = 0;
-    }
+    // constructor() {
+    //     this.id = 0;
+    // }
 
 
     /**
@@ -53,15 +53,19 @@ class ActiveRecordEntity {
     }
 
 
-    save() {
-        const mappedProperties = this.mapPropertiesToDbFormat();
-
-        if (this.id !== null) {
-            this.update(mappedProperties);
-            return 1;
-        } else {
-            return this.insert(mappedProperties);
-        }
+    async save(id) {
+        console.log('== save ===')
+        // TODO: непонятно как прочитать приватные поля
+        console.log(this)
+        console.log(Object.keys(this))
+        // const mappedProperties = this.mapPropertiesToDbFormat();
+        //
+        // if (this.id !== null) {
+            // this.update(mappedProperties);
+        //     return 1;
+        // } else {
+        //     return this.insert(mappedProperties);
+        // }
 
     }
 
@@ -92,6 +96,8 @@ class ActiveRecordEntity {
     //private function
     insert(mappedProperties) {
         // TODO: callback fn for filter???
+        console.log('inside insert');
+
         const filteredProperties = mappedProperties.filter();
 
         const columns = [];
@@ -182,7 +188,8 @@ class ActiveRecordEntity {
      */
     static async getById(id) {
         const [rows] = await conn.query('SELECT * FROM `' + this.getTableName() + '` WHERE id=?;',  [id]);
-        return rows ? rows[0] : null;
+        const classInstances = rows.map(row => new this(row));
+        return classInstances ? classInstances[0] : null;
     }
 
     //abstract protected static function
