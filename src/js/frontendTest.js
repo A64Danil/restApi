@@ -27,6 +27,8 @@ function createOptionItem(obj) {
     return option;
 }
 
+let userID;
+
 const URL = 'http://localhost:3000/api/v1/users';
 const putForm = document.getElementById('putForm');
 const postForm = document.getElementById('postForm');
@@ -34,7 +36,7 @@ const postForm = document.getElementById('postForm');
 postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const newData = new FormData(putForm);
+    const newData = new FormData(postForm);
 
     // создаем пустой объект
     const object = {};
@@ -56,14 +58,14 @@ postForm.addEventListener('submit', async (e) => {
     let result = await response.json();
     console.log(result);
 
-    getUsers();
+    await getUsers();
 })
 
 putForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const newData = new FormData(putForm);
-    const userID = newData.get("id");
+
     console.log(userID)
 
     // создаем пустой объект
@@ -91,10 +93,13 @@ putForm.addEventListener('submit', async (e) => {
 
 
 const usersList = document.querySelector('.usersList');
-const usersIDlist = document.querySelector('.usersIDlist');
+const usersSelect = document.querySelector('.usersSelect');
 
 console.log(usersList);
-console.log(usersIDlist);
+console.log(usersSelect);
+
+usersSelect.addEventListener('change', function () {
+})
 
 async function getUser(id) {
     const res = await fetch(URL + "/" + id);
@@ -112,12 +117,12 @@ function updateForm(user) {
 
 function updateLists(data) {
     usersList.innerHTML = null;
-    usersIDlist.innerHTML = null;
+    usersSelect.innerHTML = null;
     data.forEach(el => {
         const item = createListItem(el);
         const option = createOptionItem(el);
         usersList.append(item)
-        usersIDlist.append(option)
+        usersSelect.append(option)
     });
 
 }
@@ -137,10 +142,29 @@ window.addEventListener('load', async function (){
     await getUsers();
 })
 
-usersIDlist.addEventListener('change', async function (e){
+usersSelect.addEventListener('change', async function (e){
     console.log('user changed');
-    console.log(usersIDlist.value);
-    const user = await getUser(usersIDlist.value);
+    console.log(usersSelect.value);
+    const user = await getUser(usersSelect.value);
     updateForm(user);
 
+
+    console.log('change')
+    userID = usersSelect.value;
+    console.log('userId',userID)
+
 })
+
+class Test {
+
+    #a
+    constructor(props) {
+        this.#a = '1'
+        this.b = undefined;
+
+    }
+
+}
+
+const t = new Test();
+console.log(t)

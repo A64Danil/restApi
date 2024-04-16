@@ -8,17 +8,17 @@
 <h3>Create (post):</h3>
 <form action="http://localhost:3000/api/v1/users" method="POST" id="postForm">
     <label>
-        <input type="text" name="name">
+        <input type="text" name="name" value="Рудольф2">
         Введите имя юзера
     </label>
     <br>
     <label>
-        <input type="text" name="email">
+        <input type="text" name="email" value="philosoph1978@gmail.com">
         Введите email
     </label>
     <br>
     <label>
-        <input type="text" name="password">
+        <input type="text" name="password" value="justTestPassword">
         Введите ненастоящий пароль
     </label>
     <br>
@@ -29,7 +29,7 @@
 <h3>Update (put):</h3>
 <form method="PUT" id="putForm">
     <label >
-        <select name="id" class="usersIDlist"></select>
+        <select class="usersSelect"></select>
         ID юзера
     </label>
     <br>
