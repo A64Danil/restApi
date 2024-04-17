@@ -10,9 +10,10 @@ let router = express.Router();
 const Router = new routerController(router);
 
 Router.get('/', userService.getUsers)
+Router.post('/', userService.createUser)
+
+
 Router.get('/:id', userService.getUserById);
-
-
 Router.put('/:id', userService.updateUserById);
 
 
