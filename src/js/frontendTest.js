@@ -110,7 +110,7 @@ async function getUser(id) {
 function updateForm(user) {
     console.log(user);
     console.log(putForm.elements)
-    putForm.elements.nickname.value = user.nickname;
+    putForm.elements.name.value = user.name;
     putForm.elements.email.value = user.email;
     usersSelect.value = user.id;
 }
