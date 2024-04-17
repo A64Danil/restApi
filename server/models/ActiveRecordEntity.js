@@ -53,42 +53,37 @@ class ActiveRecordEntity {
     }
 
 
-    async save(id) {
-        console.log('== save ===')
-        // TODO: непонятно как прочитать приватные поля
-        console.log(this)
-        console.log(Object.keys(this))
-        // const mappedProperties = this.mapPropertiesToDbFormat();
-        //
-        // if (this.id !== null) {
-            // this.update(mappedProperties);
-        //     return 1;
-        // } else {
-        //     return this.insert(mappedProperties);
-        // }
+    async save() {
+        if (this.id) {
+            console.log('in save ==> before update')
+            return await this.#update();
+        } else {
+            // TODO: work here
+            console.log('try to inset becaouse user have no ID', this.id)
+            // return this.insert(mappedProperties);
+        }
 
     }
 
 
     // private function
-    static async update(id, props) {
-        delete props.id;
-        // console.log('props')
-        // console.log(props)
+    async #update() {
+        console.log('#update', this)
+        const id = this.id;
+        delete this.id;
         const columns2params = [];
         const values = [];
 
-        for (let column in props) {
-            const value = props[column];
+        for (let column in this) {
+            const value = this[column];
             columns2params.push(column + ' = ?'); // column1 = ?
             values.push(value); // [value1]
         }
         console.log(columns2params, values);
-
         const query = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ? LIMIT 1;'
         console.log(query)
         const [rows, fields] = await conn.query(query,[...values, id]);
-
+        // TODO: продумать как обрабатывать ответ от сервера
         return rows;
     }
 
@@ -159,9 +154,9 @@ class ActiveRecordEntity {
      */
     // public static function
     static async findAll() {
-        // const [rows, fields] = await conn.query("SELECT * FROM " + this.getTableName());
         const [rows] = await conn.query("SELECT * FROM " + this.getTableName());
-        return rows;
+        const classInstances = rows.map(row => new this(row));
+        return classInstances;
     }
 
 
