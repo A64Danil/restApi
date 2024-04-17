@@ -112,7 +112,7 @@ function updateForm(user) {
     console.log(putForm.elements)
     putForm.elements.nickname.value = user.nickname;
     putForm.elements.email.value = user.email;
-
+    usersSelect.value = user.id;
 }
 
 function updateLists(data) {
