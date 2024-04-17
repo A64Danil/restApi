@@ -19,7 +19,7 @@ function createOptionItem(obj) {
     let text = obj.id + " )";
 
     if(obj.title) text += " " + obj.title;
-    if(obj.nickname) text += " " + obj.nickname;
+    if(obj.name) text += " " + obj.name;
 
     option.value = obj.id;
     option.textContent = text;
@@ -98,9 +98,6 @@ const usersSelect = document.querySelector('.usersSelect');
 console.log(usersList);
 console.log(usersSelect);
 
-usersSelect.addEventListener('change', function () {
-})
-
 async function getUser(id) {
     const res = await fetch(URL + "/" + id);
     const user = await res.json();
@@ -108,6 +105,7 @@ async function getUser(id) {
 }
 
 function updateForm(user) {
+    if(!userID) userID = user.id;
     console.log(user);
     console.log(putForm.elements)
     putForm.elements.name.value = user.name;
