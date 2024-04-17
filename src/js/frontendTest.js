@@ -6,7 +6,7 @@ function createListItem(obj) {
     let text = obj.id + " )";
 
     if(obj.title) text += " " + obj.title;
-    if(obj.nickname) text += " " + obj.nickname;
+    if(obj.name) text += " " + obj.name;
 
     li.textContent = text;
 
