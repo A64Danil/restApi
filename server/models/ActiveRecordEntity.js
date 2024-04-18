@@ -59,8 +59,8 @@ class ActiveRecordEntity {
             return await this.#update();
         } else {
             // TODO: work here
-            console.log('try to inset becaouse user have no ID', this.id)
-            // return this.insert(mappedProperties);
+            console.log('try to inset because user have no ID: ', this.id)
+            return await this.#insert();
         }
 
     }
@@ -89,51 +89,26 @@ class ActiveRecordEntity {
 
 
     //private function
-    insert(mappedProperties) {
-        // TODO: callback fn for filter???
+    async #insert(mappedProperties) {
         console.log('inside insert');
 
-        const filteredProperties = mappedProperties.filter();
-
         const columns = [];
+        const valuePlaceholders = [];
+        const values = [];
 
-        const paramsNames = [];
-
-        const params2values = {};
-
-        for (let columnName in filteredProperties) {
-            let value = filteredProperties[columnName];
-
-            // TODO: is this push ???
-            columns.push('`' + columnName + '`');
-
-            const paramName = ':' . columnName;
-
-            paramsNames.push(paramName);
-
-            params2values[paramName] = value;
-
+        for (let column in this) {
+            const value = this[column];
+            columns.push(column); // column1
+            valuePlaceholders.push("?") // ?
+            values.push(value); // [value1]
         }
+        console.log(columns, valuePlaceholders, values);
 
-        console.log(columns);
-        console.log(paramsNames);
-        console.log(params2values);
-
-        const columnsViaSemicolon = columns.join(', ');
-
-        const paramsNamesViaSemicolon = paramsNames.join(', ');
-
-
-        const sql = 'INSERT INTO ' + this.getTableName() + ' (' + columnsViaSemicolon + ') VALUES (' + paramsNamesViaSemicolon + ');';
-
-
-        // const db = Db.getInstance();
-
-        // const result = db.queryId($sql, params2values, this.constructor);
-
-        // return result;
-
-        return [columnsViaSemicolon, paramsNamesViaSemicolon]
+        const query = 'INSERT INTO ' + this.getTableName() + ' (' + columns + ') VALUES (' + valuePlaceholders + ');';
+        console.log(query)
+        const [rows, fields] = await conn.query(query,[...values]);
+        // TODO: отсылать не все поля?
+        return this
     }
 
     // public
