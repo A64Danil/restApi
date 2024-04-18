@@ -83,6 +83,30 @@ class routerController {
 
 
     }
+
+    delete(path, handler) {
+        const dataName = getReturnedDataName(handler.name);
+
+        this.router.post(path, async (req, res) => {
+            try {
+                const data = await handler(req, res);
+                // TODO: какая может быть ошибка удаления юзера?
+
+                // if (!data) {
+                //     const err = new AppError(`${dataName} not found`, 404);
+                //     errorHandler(err, req, res)
+                //     return ;
+                // }
+
+                res.status(204).send();
+            } catch (error) {
+                const err = new AppError('Internal Server Error', 500);
+                errorHandler(err, req, res)
+            }
+        })
+
+
+    }
 }
 
 module.exports = routerController;
