@@ -21,14 +21,31 @@ async function getUserById(req, res) {
     return data;
 }
 
+async function createUser(req, res) {
+    const body = req.body;
+    const newUser = new User(body);
+    const data = await newUser.save();
+    return data;
+}
+
 async function updateUserById(req, res) {
-    console.log('updateUserById')
     const id = req.params.id;
-    const user = await User.getById(id);
+    let user = await User.getById(id);
     if (!user) return null
 
     const body = req.body;
-    const data = await User.update(id, body);
+    for(let key in body) {
+        if(user[key] !== body[key]) {
+            // TODO: перезаписывать только отличающиеся поля
+            console.log("Поле " + key + " отличается")
+        }
+    }
+    // TODO: update only existing fields - проверить что будет если оригинальный юзер будет иметь те поля, которых нет в боди
+    user = Object.assign(user, req.body)
+    console.log('user after update', user)
+    const data = await user.save();
+    console.log('RETURNED DATA (updateUserById)')
+    console.log(data)
     return data;
 }
 
@@ -93,5 +110,6 @@ module.exports = {
     getUsers,
     getUserByName,
     getUserById,
+    createUser,
     updateUserById,
 };
