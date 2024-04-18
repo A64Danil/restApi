@@ -27,11 +27,22 @@ function createOptionItem(obj) {
     return option;
 }
 
+function createDelBtn(id) {
+    const btn = document.createElement('button');
+    btn.dataset.delId = id;
+    btn.textContent = "Удалить";
+    return btn;
+}
+
 let userID;
 
 const URL = 'http://localhost:3000/api/v1/users';
 const putForm = document.getElementById('putForm');
 const postForm = document.getElementById('postForm');
+
+
+const usersList = document.querySelector('.usersList');
+const usersSelect = document.querySelector('.usersSelect');
 
 postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -92,11 +103,19 @@ putForm.addEventListener('submit', async (e) => {
 })
 
 
-const usersList = document.querySelector('.usersList');
-const usersSelect = document.querySelector('.usersSelect');
+usersList.addEventListener('click', async function (e){
+    const trg = e.target;
+    if(trg.tagName === "BUTTON") {
+        const userID = trg.dataset.delId;
+        let response = await fetch(URL + '/' + userID, {
+            method: 'DELETE',
+        });
+        console.log(response)
 
-console.log(usersList);
-console.log(usersSelect);
+        getUsers();
+    }
+})
+
 
 async function getUser(id) {
     const res = await fetch(URL + "/" + id);
@@ -119,6 +138,8 @@ function updateLists(data) {
     data.forEach(el => {
         const item = createListItem(el);
         const option = createOptionItem(el);
+        const btn = createDelBtn(el.id);
+        item.append(btn)
         usersList.append(item)
         usersSelect.append(option)
     });
