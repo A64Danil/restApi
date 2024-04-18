@@ -136,14 +136,14 @@ class ActiveRecordEntity {
 
     //public static function
     static async findOneByColumn(columnName, value) {
-        // const result = db.query('SELECT * FROM `' + this.getTableName() + '` WHERE `' + columnName + '` = :value LIMIT 1;',[':value' => value], this.constructor);
         const [rows] = await conn.query('SELECT * FROM `' + this.getTableName() + '` WHERE `' + columnName + '` = ? LIMIT 1;',[value]);
 
         if (rows.length === 0) {
             return null;
         }
 
-        return rows[0];
+        const classInstance = new this(rows[0]);
+        return classInstance;
 
     }
 
