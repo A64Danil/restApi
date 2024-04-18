@@ -67,6 +67,9 @@ class routerController {
             try {
                 const data = await handler(req, res);
                 // TODO: какая может быть ошибка создания юзера?
+                // TODO: проверять что пользователей с таким эмэилом - не существует
+
+                // https://www.npmjs.com/package/class-validator
 
                 // if (!data) {
                 //     const err = new AppError(`${dataName} not found`, 404);
@@ -87,16 +90,15 @@ class routerController {
     delete(path, handler) {
         const dataName = getReturnedDataName(handler.name);
 
-        this.router.post(path, async (req, res) => {
+        this.router.delete(path, async (req, res) => {
             try {
                 const data = await handler(req, res);
-                // TODO: какая может быть ошибка удаления юзера?
 
-                // if (!data) {
-                //     const err = new AppError(`${dataName} not found`, 404);
-                //     errorHandler(err, req, res)
-                //     return ;
-                // }
+                if (!data) {
+                    const err = new AppError(`${dataName} not found`, 404);
+                    errorHandler(err, req, res)
+                    return ;
+                }
 
                 res.status(204).send();
             } catch (error) {
