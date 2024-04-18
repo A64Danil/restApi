@@ -112,13 +112,12 @@ class ActiveRecordEntity {
     }
 
     // public
-    delete() {
-        // const db = Db.getInstance();
+    async delete() {
+        console.log('delete');
+        const query = 'DELETE FROM `' + this.getTableName() + '` WHERE id = ?';
+        const [rows, fields] = await conn.query(query, this.id);
 
-        // db.query('DELETE FROM `' + this.getTableName() + '` WHERE id = :id', [':id' => this.id]);
-
-        this.id = null;
-
+        return rows
     }
 
 
