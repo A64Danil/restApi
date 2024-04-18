@@ -49,6 +49,14 @@ async function updateUserById(req, res) {
     return data;
 }
 
+async function deleteUserById(req, res) {
+    const id = req.params.id;
+    let user = await User.getById(id);
+    if (!user) return null
+
+    const data = await user.delete();
+    return true
+}
 
 // TODO: не уверен что оно должно работать именно так
 async function getUserByName(req, res) {
@@ -111,5 +119,6 @@ module.exports = {
     getUserByName,
     getUserById,
     createUser,
+    deleteUserById,
     updateUserById,
 };
