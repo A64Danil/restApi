@@ -15,6 +15,7 @@ Router.post('/', userService.createUser)
 
 Router.get('/:id', userService.getUserById);
 Router.put('/:id', userService.updateUserById);
+Router.delete('/:id', userService.deleteUserById);
 
 
 // router.get('/', (req, res) => {
