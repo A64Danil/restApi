@@ -7,37 +7,40 @@ const { ActiveRecordEntity } = require('../ActiveRecordEntity')
 
 class User extends ActiveRecordEntity {
     
-    #name
+    name
 
-    #nickname
-
-    #email
+    email
 
     #isConfirmed
 
-    #role
+    role
 
-    #passwordHash
+    passwordHash
 
     #authToken
 
     #createdAt
 
-    /**
-     * Get a name. (public function)
-     * @return {string} The nname.
-     */
-    getName() {
-        return this.#name;
-
+    constructor(body) {
+        super();
+        if (!body) return this;
+        console.log('user constructor')
+        // console.log(body)
+        // TODO: продумать конструктор юзера
+        this.id = body.id;
+        this.name = body.name;
+        this.email = body.email;
+        this.role = "user";
+        this.passwordHash = "sha256:" + body.password;
+        // this.passwordHash = body.passwordHash;
     }
 
     /**
-     * Get a nickname. (public function)
-     * @return {string} The nickname.
+     * Get a name. (public function)
+     * @return {string} The name.
      */
-    getNickname() {
-        return this.#nickname;
+    getName() {
+        return this.name;
 
     }
 
@@ -46,7 +49,7 @@ class User extends ActiveRecordEntity {
      * @return {string} The email.
      */
     getEmail() {
-        return this.#email;
+        return this.email;
     }
     
     /**
@@ -62,6 +65,10 @@ class User extends ActiveRecordEntity {
      * Get table name. (protected static function)
      * @return {string}
      */
+    // TODO: подумать как сделать чтобы метод был доступен и объекту и экземпляру
+    getTableName(){
+        return 'users';
+    }
     static getTableName(){
         return 'users';
     }
@@ -73,8 +80,8 @@ class User extends ActiveRecordEntity {
      */
     static signUp(userData) {
 
-        if (!userData.#nickname) {
-            // throw new InvalidArgumentException('Не передан nickname');
+        if (!userData.name) {
+            // throw new InvalidArgumentException('Не передан name');
         }
 
 
@@ -86,7 +93,7 @@ class User extends ActiveRecordEntity {
 
 
 
-        if (!userData.#email) {
+        if (!userData.email) {
             // throw new InvalidArgumentException('Не передан email');
         }
 
@@ -109,28 +116,28 @@ class User extends ActiveRecordEntity {
         }
 
 
-        if (this.findOneByColumn('nickname', userData.#nickname) !== null) {
+        if (this.findOneByColumn('nickname', userData.name) !== null) {
             // throw new InvalidArgumentException('Пользователь с таким nickname уже существует');
         }
 
 
 
-        if (this.findOneByColumn('email', userData.#email) !== null) {
+        if (this.findOneByColumn('email', userData.email) !== null) {
             throw new InvalidArgumentException('Пользователь с таким email уже существует');
         }
 
         const user = new User();
 
-        user.#nickname = userData['nickname'];
+        user.name = userData['nickname'];
 
-        user.#email = userData['email'];
+        user.email = userData['email'];
 
         // TODO: password_hash
-        // user.#passwordHash = password_hash(userData['password'], PASSWORD_DEFAULT);
+        // user.passwordHash = password_hash(userData['password'], PASSWORD_DEFAULT);
 
         user.#isConfirmed = 0;
 
-        user.#role = 'user';
+        user.role = 'user';
 
         // TODO: sha1
         user.#authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
@@ -159,7 +166,7 @@ class User extends ActiveRecordEntity {
      */
     static login(loginData) {
 
-        if (!loginData.#email) {
+        if (!loginData.email) {
             // throw new InvalidArgumentException('Не передан email');
         }
 
@@ -170,7 +177,7 @@ class User extends ActiveRecordEntity {
         }
 
         
-        const user = User.findOneByColumn('email', loginData.#email);
+        const user = User.findOneByColumn('email', loginData.email);
 
         if (user === null) {
             // throw new InvalidArgumentException('Нет пользователя с таким email');
@@ -210,7 +217,7 @@ class User extends ActiveRecordEntity {
      * @return {string} Password hash
      */
     getPasswordHash(){
-        return this.#passwordHash;
+        return this.passwordHash;
     }
 
     /**
