@@ -10,6 +10,12 @@ const {getPostData, formDataToObj, parseIntObj} = require('../../../utils');
 const { User } = require('../../models/Users/User');
 
 async function getUsers(req, res) {
+    const query = req.query;
+    if(query.name) {
+        const user = await getUserByName(req, res)
+        return user
+    }
+
     const data = await User.findAll();
     return data;
 }
@@ -23,6 +29,8 @@ async function getUserById(req, res) {
 
 async function createUser(req, res) {
     const body = req.body;
+
+    // TODO: проверять чтобы у пользователя был уникальный эмэйл
     const newUser = new User(body);
     const data = await newUser.save();
     return data;
@@ -60,23 +68,9 @@ async function deleteUserById(req, res) {
 
 // TODO: не уверен что оно должно работать именно так
 async function getUserByName(req, res) {
-
-    // let data = req.body;
-    // let data = parseIntObj(req.query);;
-    const id = req.params.id;
-
-    console.log('id: ', id)
-    // TODO: понять как вытаскивать из запроса параметры поиска юзера
-    const data = await User.findOneByColumn('name', "Max" );
-    // console.log('data in getAllUsers')
-    console.log(data)
-
-
-    res.status(200).json({
-        status: "success",
-        length: data?.length,
-        data: data,
-    });
+    const query = req.query;
+    const data = await User.findOneByColumn('name', query.name );
+    return data
 }
 
 //
