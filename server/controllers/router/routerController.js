@@ -74,7 +74,7 @@ class routerController {
                 //     return ;
                 // }
 
-                res.json(data);
+                res.status(201).json(data);
             } catch (error) {
                 const err = new AppError('Internal Server Error', 500);
                 errorHandler(err, req, res)
