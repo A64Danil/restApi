@@ -56,8 +56,7 @@ class Article extends ActiveRecordEntity {
      * @return {User} An article author (type USER).
      */
     getAuthor() {
-        // TODO: check this
-        return ActiveRecordEntity.getById(this.authorId);
+        return this.getById(this.authorId);
     }
 
 
