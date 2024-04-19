@@ -66,16 +66,14 @@ class routerController {
         this.router.post(path, async (req, res) => {
             try {
                 const data = await handler(req, res);
-                // TODO: какая может быть ошибка создания юзера?
-                // TODO: проверять что пользователей с таким эмэилом - не существует
 
                 // https://www.npmjs.com/package/class-validator
 
-                // if (!data) {
-                //     const err = new AppError(`${dataName} not found`, 404);
-                //     errorHandler(err, req, res)
-                //     return ;
-                // }
+                if (typeof data === 'string') {
+                    const err = new AppError(`${data}`, 409);
+                    errorHandler(err, req, res)
+                    return ;
+                }
 
                 res.status(201).json(data);
             } catch (error) {
