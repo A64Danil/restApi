@@ -10,6 +10,7 @@ node_modules/
 coverage/
 dist/
 /config/db.js
+/config/db.json
 upload/
 /.ORIGeslintrc.json
 package-lock.json
