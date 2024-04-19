@@ -1,8 +1,6 @@
 const mysql = require('mysql2')
 
-const DBconfig = require('../../dbEnv.json');
-// TODO: old version of connection
-// const connection = mysql.createConnection(DBconfig)
+const DBconfig = require('../../config/db.json');
 
 const connection = mysql.createPool(DBconfig).promise()
 

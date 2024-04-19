@@ -1,10 +1,6 @@
 'use strict';
 
-const jwt = require('jsonwebtoken');
-const db = require('../../../dbEnv.json');
-
-
-const {getPostData, formDataToObj, parseIntObj} = require('../../../utils');
+// const jwt = require('jsonwebtoken');
 
 
 const { User } = require('../../models/Users/User');
