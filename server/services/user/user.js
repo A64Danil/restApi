@@ -29,8 +29,9 @@ async function getUserById(req, res) {
 
 async function createUser(req, res) {
     const body = req.body;
+    const userWithEmail = await getUserByParam('email', body.email);
+    if(userWithEmail) return "User with this email already exists"
 
-    // TODO: проверять чтобы у пользователя был уникальный эмэйл
     const newUser = new User(body);
     const data = await newUser.save();
     return data;
@@ -66,10 +67,15 @@ async function deleteUserById(req, res) {
     return true
 }
 
-// TODO: не уверен что оно должно работать именно так
+
 async function getUserByName(req, res) {
     const query = req.query;
     const data = await User.findOneByColumn('name', query.name );
+    return data
+}
+
+async function getUserByParam(name, value) {
+    const data = await User.findOneByColumn(name, value);
     return data
 }
 
