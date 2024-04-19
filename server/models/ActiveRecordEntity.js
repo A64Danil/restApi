@@ -89,9 +89,7 @@ class ActiveRecordEntity {
 
 
     //private function
-    async #insert(mappedProperties) {
-        console.log('inside insert');
-
+    async #insert() {
         const columns = [];
         const valuePlaceholders = [];
         const values = [];
@@ -102,10 +100,9 @@ class ActiveRecordEntity {
             valuePlaceholders.push("?") // ?
             values.push(value); // [value1]
         }
-        console.log(columns, valuePlaceholders, values);
+        // console.log(columns, valuePlaceholders, values);
 
         const query = 'INSERT INTO ' + this.getTableName() + ' (' + columns + ') VALUES (' + valuePlaceholders + ');';
-        console.log(query)
         const [rows, fields] = await conn.query(query,[...values]);
         // TODO: отсылать не все поля?
         return this
@@ -133,7 +130,7 @@ class ActiveRecordEntity {
         return classInstances;
     }
 
-
+    // TODO: are we need fineAllByColumn?
     //public static function
     static async findOneByColumn(columnName, value) {
         const [rows] = await conn.query('SELECT * FROM `' + this.getTableName() + '` WHERE `' + columnName + '` = ? LIMIT 1;',[value]);
