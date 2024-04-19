@@ -27,7 +27,7 @@ class ActiveRecordEntity {
         this[camelCaseName] = value;
     }
 
-    // Privat?
+    // Privat
     underscoreToCamelCase(source){
         const res = source.split('_').filter(s => s.length).map(ucFirst);
         res[0] = lcFirst(res[0]);
@@ -39,36 +39,18 @@ class ActiveRecordEntity {
         return source.replace( /([A-Z])/g, "_$1").toLowerCase();
     }
 
-    //private
-    mapPropertiesToDbFormat() {
-        const properties = Object.keys(this)
-        const mappedProperties = [];
-
-        for (let property of properties) {
-            const propertyNameAsUnderscore = this.camelCaseToUnderscore(property);
-            mappedProperties[propertyNameAsUnderscore] = this[property];
-        }
-
-        return mappedProperties;
-    }
-
 
     async save() {
         if (this.id) {
-            console.log('in save ==> before update')
             return await this.#update();
         } else {
-            // TODO: work here
-            console.log('try to inset because user have no ID: ', this.id)
             return await this.#insert();
         }
-
     }
 
 
     // private function
     async #update() {
-        console.log('#update', this)
         const id = this.id;
         delete this.id;
         const columns2params = [];
@@ -79,9 +61,7 @@ class ActiveRecordEntity {
             columns2params.push(column + ' = ?'); // column1 = ?
             values.push(value); // [value1]
         }
-        console.log(columns2params, values);
         const query = 'UPDATE ' + this.getTableName() + ' SET ' + columns2params.join(', ') + ' WHERE id = ? LIMIT 1;'
-        console.log(query)
         const [rows, fields] = await conn.query(query,[...values, id]);
         // TODO: продумать как обрабатывать ответ от сервера
         return rows;
