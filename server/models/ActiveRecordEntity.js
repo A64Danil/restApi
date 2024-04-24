@@ -105,7 +105,7 @@ class ActiveRecordEntity {
      */
     // public static function
     static async findAll() {
-        const [rows] = await conn.query("SELECT * FROM " + this.getTableName());
+        const [rows] = await conn.query("SELECT * FROM `" + this.getTableName() + "` LIMIT 100;");
         const classInstances = rows.map(row => new this(row));
         return classInstances;
     }
